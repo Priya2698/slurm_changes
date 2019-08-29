@@ -290,6 +290,11 @@ static void _validate_switches(void)
 			}
 		}
 		switch_ptr->link_speed = ptr->link_speed;
+		
+		/** initialize no of comm_jobs for job_aware schedluing **/
+		switch_ptr->comm_jobs = 0;
+		/********************************************************/
+
 		if (ptr->nodes) {
 			switch_ptr->level = 0;	/* leaf switch */
 			switch_ptr->nodes = xstrdup(ptr->nodes);
@@ -429,6 +434,24 @@ static void _validate_switches(void)
 	}
 	s_p_hashtbl_destroy(conf_hashtbl);
 	_log_switches();
+
+	/** setting the leaf_switch for all nodes **/
+	for (i=0; i < switch_record_cnt; i++){
+		if (switch_record_table[i].level == 0){
+			char* name;
+			name = strtok (switch_record_table[i].nodes,",");
+			while( name != NULL){
+				struct node_record* nd  = find_node_record(name);
+				nd->leaf_switch = i;
+				
+				/*debug("Node_Name= %s switch_name=%s",name,switch_record_table[i].name);*/
+				name = strtok(NULL,",");
+			}			
+		}	
+	
+	}
+	/******************************************/
+
 }
 
 static void _log_switches(void)

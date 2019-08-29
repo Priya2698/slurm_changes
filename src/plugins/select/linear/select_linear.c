@@ -412,10 +412,10 @@ static int _get_avail_cpus(struct job_record *job_ptr, int index)
 	}
 
 #if SELECT_DEBUG
-	info("host:%s HW_ cpus_per_node:%u boards_per_node:%u "
+	/*info("host:%s HW_ cpus_per_node:%u boards_per_node:%u "
 	     "sockets_per_boards:%u cores_per_socket:%u thread_per_core:%u ",
 	     node_ptr->name, cpus_per_node, boards_per_node, sockets_per_board,
-	     cores_per_socket, thread_per_core);
+	     cores_per_socket, thread_per_core);*/
 #endif
 	/* pick defaults for any unspecified items */
 	if (cpus_per_task <= 0)
@@ -438,10 +438,10 @@ static int _get_avail_cpus(struct job_record *job_ptr, int index)
 	if (ntasks_per_node > 0)
 		avail_cpus = MIN(avail_cpus, ntasks_per_node * cpus_per_task);
 #if SELECT_DEBUG
-	debug("avail_cpus index %d = %u (out of boards_per_node:%u "
+/*	debug("avail_cpus index %d = %u (out of boards_per_node:%u "
 	      "sockets_per_boards:%u cores_per_socket:%u thread_per_core:%u)",
 	      index, avail_cpus, boards_per_node, sockets_per_board,
-	      cores_per_socket, thread_per_core);
+	      cores_per_socket, thread_per_core);*/
 #endif
 	return(avail_cpus);
 }
@@ -2010,10 +2010,17 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 		char *node_names = NULL;
 		if (switches_node_cnt[i])
 			node_names = bitmap2node_name(switches_bitmap[i]);
-		debug("switch=%s nodes=%u:%s speed=%u",
-		      switch_record_table[i].name,
+		debug("switch_index=%d switch=%s nodes=%u:%s level=%d" 
+			"speed=%u switch_parent=%d switch_child=%d",
+		      i,switch_record_table[i].name,
 		      switches_node_cnt[i], node_names,
-		      switch_record_table[i].link_speed);
+		      switch_record_table[i].level,
+		      switch_record_table[i].link_speed,
+		      switch_record_table[i].parent,
+		      switch_record_table[i].num_switches);
+		
+		for(int j=0;i<switch_record_table[i].num_switches;j++)
+                        debug(" %d",switch_record_table[i].switch_index[j]);
 		xfree(node_names);
 	}
 #endif

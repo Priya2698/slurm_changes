@@ -2651,6 +2651,16 @@ static int _sync_nodes_to_active_job(struct job_record *job_ptr)
 		node_ptr->run_job_cnt++; /* NOTE:
 				* This counter moved to comp_job_cnt
 				* by _sync_nodes_to_comp_job() */
+
+		/* Update no of communication jobs running on switch*/
+		if(job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+			switch_record_table[node_ptr->leaf_switch].comm_jobs++;
+			debug("No of comm jobs=%d after jobid =%d on switch =%d",
+				switch_record_table[node_ptr->leaf_switch].comm_jobs,
+				job_ptr->job_id,node_ptr->leaf_switch);
+		}
+		/****************************************************/
+
 		if ((job_ptr->details) && (job_ptr->details->share_res == 0))
 			node_ptr->no_share_job_cnt++;
 

@@ -76,6 +76,7 @@
 #include "src/common/slurm_mcs.h"
 #include "src/common/slurm_priority.h"
 #include "src/common/slurm_protocol_pack.h"
+#include "src/common/slurm_topology.h" /** To use switch_record_table **/
 #include "src/common/switch.h"
 #include "src/common/timers.h"
 #include "src/common/track_script.h"
@@ -145,6 +146,9 @@ typedef struct {
 /* Global variables */
 List   job_list = NULL;		/* job_record list */
 time_t last_job_update;		/* time of last update to job records */
+
+/** switch record table for updating count of communication jobs **/
+struct switch_record *switch_record_table;
 
 List purge_files_list = NULL;	/* job files to delete */
 
@@ -15766,8 +15770,19 @@ static int _suspend_job_nodes(struct job_record *job_ptr, bool indf_susp)
 		if (!bit_test(job_ptr->node_bitmap, i))
 			continue;
 		node_ptr->sus_job_cnt++;
-		if (node_ptr->run_job_cnt)
+		if (node_ptr->run_job_cnt){
 			(node_ptr->run_job_cnt)--;
+		
+                        /** Update comm_jobs if valid **/
+                        if(job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+                                switch_record_table[node_ptr->leaf_switch].comm_jobs--;
+                                debug("No of comm jobs=%d after removing jobid =%d on switch =%d",
+                                       switch_record_table[node_ptr->leaf_switch].comm_jobs,
+                                      job_ptr->job_id,node_ptr->leaf_switch);
+                        }
+                        /*******************************/
+
+		}
 		else {
 			error("%s: %pJ node %s run_job_cnt underflow",
 			      __func__, job_ptr, node_ptr->name);
@@ -15842,6 +15857,15 @@ static int _resume_job_nodes(struct job_record *job_ptr, bool indf_susp)
 			      node_ptr->name);
 		}
 		node_ptr->run_job_cnt++;
+                /** Update comm_jobs if valid **/
+                if(job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+	                switch_record_table[node_ptr->leaf_switch].comm_jobs++;
+                        debug("No of comm jobs=%d after removing jobid =%d on switch =%d",
+                               switch_record_table[node_ptr->leaf_switch].comm_jobs,
+                               job_ptr->job_id,node_ptr->leaf_switch);
+                }
+                /*******************************/
+
 		if (job_ptr->details &&
 		    (job_ptr->details->share_res == 0)) {
 			node_ptr->no_share_job_cnt++;

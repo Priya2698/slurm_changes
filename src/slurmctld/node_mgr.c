@@ -65,6 +65,7 @@
 #include "src/common/slurm_accounting_storage.h"
 #include "src/common/slurm_acct_gather_energy.h"
 #include "src/common/slurm_ext_sensors.h"
+#include "src/common/slurm_topology.h"  /** To use switch_record_table **/
 #include "src/common/slurm_resource_info.h"
 #include "src/common/slurm_mcs.h"
 #include "src/common/xassert.h"
@@ -3788,6 +3789,15 @@ extern void make_node_alloc(struct node_record *node_ptr,
 	uint32_t node_flags;
 
 	(node_ptr->run_job_cnt)++;
+        /** Update comm_jobs if valid **/
+        if(job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+	        switch_record_table[node_ptr->leaf_switch].comm_jobs++;
+                debug("No of comm jobs=%d after jobid =%d on switch =%d",
+                       switch_record_table[node_ptr->leaf_switch].comm_jobs,
+                       job_ptr->job_id,node_ptr->leaf_switch);
+        }
+        /*******************************/
+
 	bit_clear(idle_node_bitmap, inx);
 	if (job_ptr->details && (job_ptr->details->share_res == 0)) {
 		bit_clear(share_node_bitmap, inx);
@@ -3852,6 +3862,15 @@ extern void make_node_comp(struct node_record *node_ptr,
 	} else {
 		if (node_ptr->run_job_cnt) {
 			(node_ptr->run_job_cnt)--;
+			/** Update comm_jobs if valid **/
+                        if(job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+                        	switch_record_table[node_ptr->leaf_switch].comm_jobs--;
+                                debug("No of comm jobs=%d after removing jobid =%d on switch =%d",
+                                       switch_record_table[node_ptr->leaf_switch].comm_jobs,
+                                      job_ptr->job_id,node_ptr->leaf_switch);
+                        }
+                        /*******************************/
+
 		} else {
 			error("%s: %pJ node %s run_job_cnt underflow", __func__,
 			      job_ptr, node_ptr->name);
@@ -3983,8 +4002,18 @@ void make_node_idle(struct node_record *node_ptr,
 				      __func__, job_ptr, node_ptr->name);
 		} else if (IS_JOB_RUNNING(job_ptr)) {
 			/* Remove node from running job */
-			if (node_ptr->run_job_cnt)
+			if (node_ptr->run_job_cnt){
 				(node_ptr->run_job_cnt)--;
+
+				/** Update comm_jobs if valid **/
+				if(job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+					switch_record_table[node_ptr->leaf_switch].comm_jobs--;
+					debug("No of comm jobs=%d after removing jobid =%d on switch =%d",
+						switch_record_table[node_ptr->leaf_switch].comm_jobs,
+						job_ptr->job_id,node_ptr->leaf_switch);
+				}
+				/*******************************/
+			}
 			else
 				error("%s: %pJ node %s run_job_cnt underflow",
 				      __func__, job_ptr, node_ptr->name);
