@@ -48,7 +48,7 @@
 #include "src/common/slurm_topology.h"
 #include "src/common/xstring.h"
 #include "src/slurmctld/slurmctld.h"
-
+#include "src/slurmctld/calc_hops.h"
 /*
  * These variables are required by the generic plugin interface.  If they
  * are not found in the plugin, the plugin loader will ignore it.
@@ -87,6 +87,7 @@ typedef struct slurm_conf_switches {
 } slurm_conf_switches_t;
 static s_p_hashtbl_t *conf_hashtbl = NULL;
 static char* topo_conf = NULL;
+extern int nodes_per_switch;
 
 static void _destroy_switches(void *ptr);
 static void _free_switch_record_table(void);
@@ -264,7 +265,10 @@ static void _validate_switches(void)
 	bitstr_t *multi_homed_bitmap = NULL;	/* nodes on >1 leaf switch */
 	bitstr_t *switches_bitmap = NULL;	/* nodes on any leaf switch */
 	bitstr_t *tmp_bitmap = NULL;
-
+#ifdef JOBAWARE
+	int cnt =0;
+	int min =node_record_count;
+#endif
 	_free_switch_record_table();
 
 	switch_record_cnt = _read_topo_file(&ptr_array);
@@ -290,10 +294,10 @@ static void _validate_switches(void)
 			}
 		}
 		switch_ptr->link_speed = ptr->link_speed;
-		
+#ifdef JOBAWARE		
 		/** initialize no of comm_jobs for job_aware schedluing **/
 		switch_ptr->comm_jobs = 0;
-		/********************************************************/
+#endif
 
 		if (ptr->nodes) {
 			switch_ptr->level = 0;	/* leaf switch */
@@ -435,22 +439,29 @@ static void _validate_switches(void)
 	s_p_hashtbl_destroy(conf_hashtbl);
 	_log_switches();
 
+#ifdef JOBAWARE
 	/** setting the leaf_switch for all nodes **/
 	for (i=0; i < switch_record_cnt; i++){
+		cnt =0;
 		if (switch_record_table[i].level == 0){
 			char* name;
 			name = strtok (switch_record_table[i].nodes,",");
 			while( name != NULL){
+				cnt ++;
 				struct node_record* nd  = find_node_record(name);
 				nd->leaf_switch = i;
 				
 				/*debug("Node_Name= %s switch_name=%s",name,switch_record_table[i].name);*/
 				name = strtok(NULL,",");
-			}			
+			}
+			debug("cnt is %d for switch %d",cnt,i);
+			if (cnt < min)
+				min = cnt;			
 		}	
-	
 	}
-	/******************************************/
+	nodes_per_switch = min;
+	debug("Nodes_per_switch are %d",nodes_per_switch);
+#endif
 
 }
 

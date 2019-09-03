@@ -74,6 +74,7 @@
 #include "src/slurmctld/slurmctld.h"
 #include "src/slurmctld/preempt.h"
 #include "src/slurmctld/proc_req.h"
+#include "src/slurmctld/calc_hops.h"
 #include "src/plugins/select/linear/select_linear.h"
 
 #define NO_SHARE_LIMIT	0xfffe
@@ -100,7 +101,6 @@ extern int hypercube_dimensions __attribute__((weak_import));
 extern struct hypercube_switch *hypercube_switch_table __attribute__((weak_import));
 extern int hypercube_switch_cnt __attribute__((weak_import));
 extern struct hypercube_switch ***hypercube_switches __attribute__((weak_import));
-
 #else
 slurm_ctl_conf_t slurmctld_conf;
 struct node_record *node_record_table_ptr;
@@ -116,6 +116,10 @@ int hypercube_dimensions;
 struct hypercube_switch *hypercube_switch_table;
 int hypercube_switch_cnt;
 struct hypercube_switch ***hypercube_switches;
+#endif
+
+#ifdef JOBAWARE
+extern int nodes_per_switch;
 #endif
 
 struct select_nodeinfo {
@@ -1951,12 +1955,21 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	uint32_t want_nodes, alloc_nodes = 0;
 	int i, j, rc = SLURM_SUCCESS;
 	int best_fit_inx, first, last;
-	int best_fit_nodes, best_fit_cpus;
+	int best_fit_nodes;
+#ifndef JOBAWARE
+	int best_fit_cpus;
+#endif
 	int best_fit_location = 0;
 	bool sufficient;
 	long time_waiting = 0;
 	int leaf_switch_count = 0;	/* Count of leaf node switches used */
-
+#ifdef JOBAWARE
+	int comm, best_comm;
+	float ratio, best_ratio;
+	int suff, best_suff;
+	int min;
+	int best_min;
+#endif
 	if (job_ptr->req_switch) {
 		time_t     time_now;
 		time_now = time(NULL);
@@ -2172,7 +2185,14 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	/* Compute best-switch nodes available array */
 	while ((alloc_nodes <= max_nodes) &&
 	       ((alloc_nodes < want_nodes) || (rem_cpus > 0))) {
-		best_fit_cpus = best_fit_nodes = 0;
+		best_fit_nodes = 0;
+#ifndef JOBAWARE
+		best_fit_cpus = 0;
+#else
+		best_comm = best_suff = 0;
+		best_ratio = 0;
+		best_min =0;
+#endif
 		for (j=0; j<switch_record_cnt; j++) {
 			if (switches_node_cnt[j] == 0)
 				continue;
@@ -2180,19 +2200,65 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 			 * of leaf switches with fewest number of idle CPUs.
 			 * This results in more leaf switches being used and
 			 * achieves better network bandwidth. */
+#ifndef JOBAWARE
 			if ((best_fit_nodes == 0) ||
-			    (!switches_required[best_fit_location] &&
-			     switches_required[j]) ||
-			    (switches_cpu_cnt[j] < best_fit_cpus)) {
-				best_fit_cpus =  switches_cpu_cnt[j];
-				best_fit_nodes = switches_node_cnt[j];
-				best_fit_location = j;
+                            (!switches_required[best_fit_location] &&
+                             switches_required[j]) ||
+                            (switches_cpu_cnt[j] < best_fit_cpus)) {
+                                best_fit_cpus =  switches_cpu_cnt[j];
+                                best_fit_nodes = switches_node_cnt[j];
+                                best_fit_location = j;
+                        }
+#else
+			comm = switch_record_table[j].comm_jobs;
+			ratio = comm/switches_node_cnt[j];
+
+			if ((want_nodes-alloc_nodes)<switches_node_cnt[j])
+				suff=1;
+			else
+				suff=0;
+			if (switches_node_cnt[j] >= nodes_per_switch/4)
+				min=1;
+			else 
+				min=0;
+			if (job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+				if((best_fit_nodes == 0) ||
+				   (min && !best_min) ||
+			           ( ((min && best_min)||( !min && !best_min)) && (ratio < best_ratio)) ||
+			   	   (((min && best_min)||( !min && !best_min)) && (ratio == best_ratio && suff && !best_suff)) ||
+			   	   ( ((min && best_min)||( !min && !best_min)) && (ratio == best_ratio && !suff && !best_suff &&
+			       	   (comm < best_comm))) ){
+					best_ratio = ratio;
+					best_suff = suff;
+					best_comm = comm;
+					best_min = min;
+					//best_fit_cpus = switches_cpu_cnt[j];
+					best_fit_nodes = switches_node_cnt[j];
+					best_fit_location = j;
+				}
 			}
+			else{
+				if((best_fit_nodes == 0) ||
+				   (ratio > best_ratio)){
+					//best_fit_cpus = switches_cpu_cnt[j];
+					best_fit_nodes = switches_node_cnt[j];
+					best_fit_location =j;
+				}
+			}
+#endif
 		}
 #if SELECT_DEBUG
+#ifndef JOBAWARE
 		debug("%s: found switch %d for allocation: nodes %d cpus %d "
 		       "allocated %u", __func__, best_fit_location,
 		       best_fit_nodes, best_fit_cpus, alloc_nodes);
+#endif
+#endif
+#ifdef JOBAWARE
+                debug("%s: found switch %d for allocation: nodes %d "
+                      "allocated %u ratio=%f comm=%d suff=%d", __func__,
+                       best_fit_location, best_fit_nodes, alloc_nodes,
+                       best_ratio, best_comm, best_suff);
 #endif
 		if (best_fit_nodes == 0)
 			break;

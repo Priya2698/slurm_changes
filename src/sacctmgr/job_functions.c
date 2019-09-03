@@ -231,7 +231,6 @@ extern int sacctmgr_modify_job(int argc, char **argv)
 	FREE_NULL_LIST(ret_list);
 
 	notice_thread_fini();
-
 	if (set) {
 		if (commit_check("Would you like to commit changes?"))
 			slurmdb_connection_commit(db_conn, 1);
@@ -240,7 +239,6 @@ extern int sacctmgr_modify_job(int argc, char **argv)
 			slurmdb_connection_commit(db_conn, 0);
 		}
 	}
-
 	slurmdb_destroy_job_modify_cond(job_cond);
 	slurmdb_destroy_job_rec(job);
 

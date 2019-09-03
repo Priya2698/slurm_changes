@@ -170,8 +170,9 @@ struct node_record {
 	uint64_t *tres_cnt;		/* tres this node has. NO_PACK*/
 	char *mcs_label;		/* mcs_label if mcs plugin in use */
 	
-	/*****************/
+//#ifdef JOBAWARE
 	int leaf_switch;                /* leaf_switch connected to the node */
+//#endif
 };
 extern struct node_record *node_record_table_ptr;  /* ptr to node records */
 extern int node_record_count;		/* count in node_record_table_ptr */

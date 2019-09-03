@@ -3789,14 +3789,16 @@ extern void make_node_alloc(struct node_record *node_ptr,
 	uint32_t node_flags;
 
 	(node_ptr->run_job_cnt)++;
+
+#ifdef JOBAWARE
         /** Update comm_jobs if valid **/
-        if(job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+        if(job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
 	        switch_record_table[node_ptr->leaf_switch].comm_jobs++;
-                debug("No of comm jobs=%d after jobid =%d on switch =%d",
+                debug("No of comm jobs=%d after jobid =%d on switch =%d at node_mgr",
                        switch_record_table[node_ptr->leaf_switch].comm_jobs,
                        job_ptr->job_id,node_ptr->leaf_switch);
         }
-        /*******************************/
+#endif
 
 	bit_clear(idle_node_bitmap, inx);
 	if (job_ptr->details && (job_ptr->details->share_res == 0)) {
@@ -3862,14 +3864,15 @@ extern void make_node_comp(struct node_record *node_ptr,
 	} else {
 		if (node_ptr->run_job_cnt) {
 			(node_ptr->run_job_cnt)--;
+#ifdef JOBAWARE
 			/** Update comm_jobs if valid **/
-                        if(job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+                        if(job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
                         	switch_record_table[node_ptr->leaf_switch].comm_jobs--;
-                                debug("No of comm jobs=%d after removing jobid =%d on switch =%d",
+                                debug("No of comm jobs=%d after removing jobid =%d on switch =%d at node_mgr",
                                        switch_record_table[node_ptr->leaf_switch].comm_jobs,
                                       job_ptr->job_id,node_ptr->leaf_switch);
                         }
-                        /*******************************/
+#endif
 
 		} else {
 			error("%s: %pJ node %s run_job_cnt underflow", __func__,
@@ -4005,14 +4008,15 @@ void make_node_idle(struct node_record *node_ptr,
 			if (node_ptr->run_job_cnt){
 				(node_ptr->run_job_cnt)--;
 
+#ifdef JOBAWARE
 				/** Update comm_jobs if valid **/
-				if(job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+				if(job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
 					switch_record_table[node_ptr->leaf_switch].comm_jobs--;
-					debug("No of comm jobs=%d after removing jobid =%d on switch =%d",
+					debug("No of comm jobs=%d after removing jobid =%d on switch =%d at node_mgr",
 						switch_record_table[node_ptr->leaf_switch].comm_jobs,
 						job_ptr->job_id,node_ptr->leaf_switch);
 				}
-				/*******************************/
+#endif
 			}
 			else
 				error("%s: %pJ node %s run_job_cnt underflow",

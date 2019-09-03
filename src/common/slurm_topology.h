@@ -61,8 +61,9 @@ struct switch_record {
 	uint16_t *switch_index;		/* indexes of child switches */
 	uint32_t temp;			/* temperature, in celsius */
 
-	/** For job_aware scheduling **/
+//#ifdef JOBAWARE
 	int comm_jobs;                  /* no of communication-intensive jobs on this switch */
+//#endif
 };
 
 extern struct switch_record *switch_record_table;  /* ptr to switch records */

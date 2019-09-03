@@ -105,6 +105,7 @@
 #include "src/slurmctld/srun_comm.h"
 #include "src/slurmctld/state_save.h"
 #include "src/slurmctld/trigger_mgr.h"
+#include "src/slurmctld/calc_hops.h" /** For calculating hops **/
 
 #define ARRAY_ID_BUF_SIZE 32
 #define DETAILS_FLAG 0xdddd
@@ -6114,7 +6115,9 @@ static int _job_complete(struct job_record *job_ptr, uid_t uid, bool requeue,
 	/* Check for and cleanup stuck scripts */
 	if (job_ptr->details && job_ptr->details->prolog_running)
 		track_script_flush_job(job_ptr->job_id);
-
+#ifdef JOBAWARE
+	hop(job_ptr);
+#endif
 	info("%s: %pJ done", __func__, job_ptr);
 	return SLURM_SUCCESS;
 }
@@ -15772,15 +15775,15 @@ static int _suspend_job_nodes(struct job_record *job_ptr, bool indf_susp)
 		node_ptr->sus_job_cnt++;
 		if (node_ptr->run_job_cnt){
 			(node_ptr->run_job_cnt)--;
-		
+#ifdef JOBAWARE		
                         /** Update comm_jobs if valid **/
-                        if(job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+                        if(job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
                                 switch_record_table[node_ptr->leaf_switch].comm_jobs--;
-                                debug("No of comm jobs=%d after removing jobid =%d on switch =%d",
+                                debug("No of comm jobs=%d after removing jobid =%d on switch =%d at job_mgr",
                                        switch_record_table[node_ptr->leaf_switch].comm_jobs,
                                       job_ptr->job_id,node_ptr->leaf_switch);
                         }
-                        /*******************************/
+#endif
 
 		}
 		else {
@@ -15857,14 +15860,16 @@ static int _resume_job_nodes(struct job_record *job_ptr, bool indf_susp)
 			      node_ptr->name);
 		}
 		node_ptr->run_job_cnt++;
+#ifdef JOBAWARE
                 /** Update comm_jobs if valid **/
-                if(job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+		
+                if(job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
 	                switch_record_table[node_ptr->leaf_switch].comm_jobs++;
-                        debug("No of comm jobs=%d after removing jobid =%d on switch =%d",
+                        debug("No of comm jobs=%d after removing jobid =%d on switch =%d at job_mgr",
                                switch_record_table[node_ptr->leaf_switch].comm_jobs,
                                job_ptr->job_id,node_ptr->leaf_switch);
-                }
-                /*******************************/
+	        }
+#endif
 
 		if (job_ptr->details &&
 		    (job_ptr->details->share_res == 0)) {
