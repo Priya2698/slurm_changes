@@ -93,6 +93,7 @@
 #include "src/slurmctld/srun_comm.h"
 #include "src/slurmctld/state_save.h"
 #include "src/slurmctld/powercapping.h"
+#include "src/slurmctld/calc_hops.h" /** For calculating hops **/
 
 #define _DEBUG 0
 #ifndef CORRESPOND_ARRAY_TASK_CNT
@@ -1703,6 +1704,9 @@ skip_start:
 		} else if (error_code == SLURM_SUCCESS) {
 			/* job initiated */
 			sched_debug3("%pJ initiated", job_ptr);
+#ifdef JOBAWARE
+			hop(job_ptr);
+#endif
 			last_job_update = now;
 			reject_array_job_id = 0;
 			reject_array_part   = NULL;

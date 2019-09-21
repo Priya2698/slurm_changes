@@ -105,7 +105,7 @@
 #include "src/slurmctld/srun_comm.h"
 #include "src/slurmctld/state_save.h"
 #include "src/slurmctld/trigger_mgr.h"
-#include "src/slurmctld/calc_hops.h" /** For calculating hops **/
+/*#include "src/slurmctld/calc_hops.h" ** For calculating hops */
 
 #define ARRAY_ID_BUF_SIZE 32
 #define DETAILS_FLAG 0xdddd
@@ -6115,9 +6115,9 @@ static int _job_complete(struct job_record *job_ptr, uid_t uid, bool requeue,
 	/* Check for and cleanup stuck scripts */
 	if (job_ptr->details && job_ptr->details->prolog_running)
 		track_script_flush_job(job_ptr->job_id);
-#ifdef JOBAWARE
+/*#ifdef JOBAWARE
 	hop(job_ptr);
-#endif
+#endif*/
 	info("%s: %pJ done", __func__, job_ptr);
 	return SLURM_SUCCESS;
 }

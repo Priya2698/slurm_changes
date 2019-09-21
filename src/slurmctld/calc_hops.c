@@ -17,20 +17,37 @@
 #include "src/sacctmgr/sacctmgr.h"
 
 extern int switch_levels;
-int calc_hop(int arr[], int size, int start, int cnt){
-	long int hops = 0;
+extern struct switch_record *switch_record_table;
+extern int nodes_per_switch;
+
+float calc_hop(int arr[], int size, int start, int cnt){
+	float hops = 0;
+	float max_hops =0;
 	int i=0;
+	float c =0;
 	for (i =start; i<start +(size/2); i++){
 		if ( i+(size/2) < cnt ){
-			if (arr[i] == arr [i + (size/2)])
-				hops+=2;
-			else
-				hops+=2*switch_levels;
+			if (arr[i] == arr [i + (size/2)]){
+				c = (switch_record_table[arr[i]].comm_jobs)/(float)nodes_per_switch ;
+				hops=2 + 2*c;
+				debug("comm_jobs = %d at switch =%d",switch_record_table[arr[i]].comm_jobs,arr[i]);
+                                debug("contention is %f hops are %f",c,hops);
+
+			}
+			else{
+				c = (switch_record_table[arr[i]].comm_jobs + switch_record_table[arr[i+1]].comm_jobs) /((float)nodes_per_switch);
+				hops=2*switch_levels + 2*switch_levels*c ;
+                                debug("comm_jobs = %d at switch =%d",switch_record_table[arr[i]].comm_jobs,arr[i]);
+                                debug("contention is %f hops are %f",c,hops);
+
+			}
 		}
 		else
 			continue;
+		if (hops > max_hops)
+			max_hops = hops;
 	}
-	return hops;
+	return max_hops;
 }
 
 void hop(struct job_record *job_ptr)
@@ -57,22 +74,28 @@ void hop(struct job_record *job_ptr)
 			node_ptr->name,index,switches[index]);
 		index+=1;
 	}
-	long int avg_hops = 0;
+	float hops = 0;
+	float max_hops =0;
+	float total_hops =0;
 	size = pow(2,ceil(log(size)/log(2)));
 	debug("Original size is %d",size);
 	while(size > 1){
-		for (i=0; i<job_ptr->node_cnt; i+= size)
-			avg_hops += calc_hop(switches,size,i,job_ptr->node_cnt);
+		for (i=0; i<job_ptr->node_cnt; i+= size){
+			hops = calc_hop(switches,size,i,job_ptr->node_cnt);
+			if (hops > max_hops)
+				max_hops = hops;
+		}
+		total_hops += max_hops;
 		size = size /2;
 	}
 	char temp[50];
 	
 	if (job_ptr->comment)
-		sprintf(temp,"%s %"PRIu32" %s %ld",job_ptr->name,job_ptr->job_id,job_ptr->comment,avg_hops);
+		sprintf(temp,"%s %"PRIu32" %s %f",job_ptr->name,job_ptr->job_id,job_ptr->comment,total_hops);
 	else 
-		sprintf(temp,"%s %"PRIu32" 0 %ld",job_ptr->name,job_ptr->job_id,avg_hops);
+		sprintf(temp,"%s %"PRIu32" 0 %f",job_ptr->name,job_ptr->job_id,total_hops);
 
-	debug("The hops are %ld and temp is %s",avg_hops,temp);
+	debug("The hops are %f and temp is %s",total_hops,temp);
 	fputs(temp,f);
 	fprintf(f,"\n");
 	fclose(f);

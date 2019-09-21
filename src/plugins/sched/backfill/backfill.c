@@ -95,6 +95,7 @@
 #include "src/slurmctld/slurmctld.h"
 #include "src/slurmctld/srun_comm.h"
 #include "backfill.h"
+#include "src/slurmctld/calc_hops.h" /** For calculating hops **/
 
 #define BACKFILL_INTERVAL	30
 #define BACKFILL_RESOLUTION	60
@@ -2732,6 +2733,9 @@ static int _start_job(struct job_record *job_ptr, bitstr_t *resv_bitmap)
 		last_job_update = time(NULL);
 		info("backfill: Started %pJ in %s on %s",
 		     job_ptr, job_ptr->part_ptr->name, job_ptr->nodes);
+#ifdef JOBAWARE
+		hop(job_ptr);
+#endif
 		power_g_job_start(job_ptr);
 		if (job_ptr->batch_flag == 0)
 			srun_allocate(job_ptr);

@@ -2201,6 +2201,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 			 * This results in more leaf switches being used and
 			 * achieves better network bandwidth. */
 #ifndef JOBAWARE
+			debug("We are doing default");
 			if ((best_fit_nodes == 0) ||
                             (!switches_required[best_fit_location] &&
                              switches_required[j]) ||
@@ -2210,6 +2211,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
                                 best_fit_location = j;
                         }
 #else
+			debug("We are doing JOBAWARE");
 			comm = switch_record_table[j].comm_jobs;
 			ratio = comm/switches_node_cnt[j];
 
