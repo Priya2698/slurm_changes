@@ -30,16 +30,16 @@ float calc_hop(int arr[], int size, int start, int cnt){
 			if (arr[i] == arr [i + (size/2)]){
 				c = (switch_record_table[arr[i]].comm_jobs)/(float)nodes_per_switch ;
 				hops=2 + 2*c;
-				debug("comm_jobs = %d at switch =%d",switch_record_table[arr[i]].comm_jobs,arr[i]);
-                                debug("contention is %f hops are %f",c,hops);
-
+				debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+					i,i+(size/2),switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);
 			}
 			else{
-				c = (switch_record_table[arr[i]].comm_jobs + switch_record_table[arr[i+1]].comm_jobs) /((float)nodes_per_switch);
+				c = (switch_record_table[arr[i]].comm_jobs + switch_record_table[arr[i+(size/2)]].comm_jobs)/((float)nodes_per_switch);
 				hops=2*switch_levels + 2*switch_levels*c ;
-                                debug("comm_jobs = %d at switch =%d",switch_record_table[arr[i]].comm_jobs,arr[i]);
-                                debug("contention is %f hops are %f",c,hops);
-
+                                debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+					i,i+(size/2),switch_record_table[arr[i]].comm_jobs,
+					switch_record_table[arr[i+(size/2)]].comm_jobs,
+					arr[i],arr[i+(size/2)],c,hops);
 			}
 		}
 		else

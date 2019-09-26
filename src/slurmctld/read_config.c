@@ -2655,9 +2655,9 @@ static int _sync_nodes_to_active_job(struct job_record *job_ptr)
 		/* Update no of communication jobs running on switch*/
 		if(job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
 			switch_record_table[node_ptr->leaf_switch].comm_jobs++;
-			debug("No of comm jobs=%d after jobid =%d on switch =%d at read_config",
+			/*debug("No of comm jobs=%d after jobid =%d on switch =%d at read_config",
 				switch_record_table[node_ptr->leaf_switch].comm_jobs,
-				job_ptr->job_id,node_ptr->leaf_switch);
+				job_ptr->job_id,node_ptr->leaf_switch);*/
 		}
 #endif
 

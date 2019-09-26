@@ -2183,6 +2183,20 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	/* phase 5 */
 	/* Select resources from these leafs on a best-fit basis */
 	/* Compute best-switch nodes available array */
+
+#ifndef JOBAWARE
+	debug("Default Allocation");
+#else
+	debug("JobAware Allocation");
+#endif
+
+/** Checking which leaf-switches are selected **/
+	for (j = 0; j < switch_record_cnt; j++) {
+                if ((switch_record_table[j].level == 0) && (switches_node_cnt[j]!=0))
+			debug("Leaf switch %d selected under parent switch %d",j,best_fit_inx);
+        }
+/**********************************************/
+
 	while ((alloc_nodes <= max_nodes) &&
 	       ((alloc_nodes < want_nodes) || (rem_cpus > 0))) {
 		best_fit_nodes = 0;
@@ -2201,7 +2215,6 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 			 * This results in more leaf switches being used and
 			 * achieves better network bandwidth. */
 #ifndef JOBAWARE
-			debug("We are doing default");
 			if ((best_fit_nodes == 0) ||
                             (!switches_required[best_fit_location] &&
                              switches_required[j]) ||
@@ -2211,7 +2224,6 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
                                 best_fit_location = j;
                         }
 #else
-			debug("We are doing JOBAWARE");
 			comm = switch_record_table[j].comm_jobs;
 			ratio = comm/switches_node_cnt[j];
 
@@ -2224,19 +2236,37 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 			else 
 				min=0;
 			if (job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
-				if((best_fit_nodes == 0) ||
-				   (min && !best_min) ||
-			           ( ((min && best_min)||( !min && !best_min)) && (ratio < best_ratio)) ||
-			   	   (((min && best_min)||( !min && !best_min)) && (ratio == best_ratio && suff && !best_suff)) ||
-			   	   ( ((min && best_min)||( !min && !best_min)) && (ratio == best_ratio && !suff && !best_suff &&
-			       	   (comm < best_comm))) ){
+
+				if(best_fit_nodes == 0 || (suff && !best_suff)){
 					best_ratio = ratio;
 					best_suff = suff;
 					best_comm = comm;
 					best_min = min;
-					//best_fit_cpus = switches_cpu_cnt[j];
 					best_fit_nodes = switches_node_cnt[j];
 					best_fit_location = j;
+				}
+				
+				else if ( suff && best_suff &&
+					  ((ratio < best_ratio) ||
+			                  ((ratio == best_ratio) && (comm < best_comm)))){
+			                best_ratio = ratio;
+                                        best_suff = suff;
+                                        best_comm = comm;
+                                        best_min = min;
+                                        best_fit_nodes = switches_node_cnt[j];
+                                        best_fit_location = j;
+				}
+				
+				else if ( !suff && !best_suff &&
+					  ((min && !best_min) || 
+					  ( ((min && best_min)||(!min && !best_min)) && (ratio < best_ratio)) ||
+                                          ( ((min && best_min)||( !min && !best_min)) && (ratio == best_ratio) && (comm < best_comm)))){
+                                        best_ratio = ratio;
+                                        best_suff = suff;
+                                        best_comm = comm;
+                                        best_min = min;
+                                        best_fit_nodes = switches_node_cnt[j];
+                                        best_fit_location = j;
 				}
 			}
 			else{

@@ -15779,9 +15779,9 @@ static int _suspend_job_nodes(struct job_record *job_ptr, bool indf_susp)
                         /** Update comm_jobs if valid **/
                         if(job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
                                 switch_record_table[node_ptr->leaf_switch].comm_jobs--;
-                                debug("No of comm jobs=%d after removing jobid =%d on switch =%d at job_mgr",
+                                /*debug("No of comm jobs=%d after removing jobid =%d on switch =%d at job_mgr",
                                        switch_record_table[node_ptr->leaf_switch].comm_jobs,
-                                      job_ptr->job_id,node_ptr->leaf_switch);
+                                      job_ptr->job_id,node_ptr->leaf_switch);*/
                         }
 #endif
 
@@ -15865,9 +15865,9 @@ static int _resume_job_nodes(struct job_record *job_ptr, bool indf_susp)
 		
                 if(job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
 	                switch_record_table[node_ptr->leaf_switch].comm_jobs++;
-                        debug("No of comm jobs=%d after removing jobid =%d on switch =%d at job_mgr",
+                        /*debug("No of comm jobs=%d after removing jobid =%d on switch =%d at job_mgr",
                                switch_record_table[node_ptr->leaf_switch].comm_jobs,
-                               job_ptr->job_id,node_ptr->leaf_switch);
+                               job_ptr->job_id,node_ptr->leaf_switch);*/
 	        }
 #endif
 

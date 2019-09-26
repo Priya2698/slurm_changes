@@ -3794,9 +3794,9 @@ extern void make_node_alloc(struct node_record *node_ptr,
         /** Update comm_jobs if valid **/
         if(job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
 	        switch_record_table[node_ptr->leaf_switch].comm_jobs++;
-                debug("No of comm jobs=%d after jobid =%d on switch =%d at node_mgr",
+                /*debug("No of comm jobs=%d after jobid =%d on switch =%d at node_mgr",
                        switch_record_table[node_ptr->leaf_switch].comm_jobs,
-                       job_ptr->job_id,node_ptr->leaf_switch);
+                       job_ptr->job_id,node_ptr->leaf_switch);*/
         }
 #endif
 
@@ -3868,9 +3868,9 @@ extern void make_node_comp(struct node_record *node_ptr,
 			/** Update comm_jobs if valid **/
                         if(job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
                         	switch_record_table[node_ptr->leaf_switch].comm_jobs--;
-                                debug("No of comm jobs=%d after removing jobid =%d on switch =%d at node_mgr",
+                                /*debug("No of comm jobs=%d after removing jobid =%d on switch =%d at node_mgr",
                                        switch_record_table[node_ptr->leaf_switch].comm_jobs,
-                                      job_ptr->job_id,node_ptr->leaf_switch);
+                                      job_ptr->job_id,node_ptr->leaf_switch);*/
                         }
 #endif
 
@@ -4012,9 +4012,9 @@ void make_node_idle(struct node_record *node_ptr,
 				/** Update comm_jobs if valid **/
 				if(job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
 					switch_record_table[node_ptr->leaf_switch].comm_jobs--;
-					debug("No of comm jobs=%d after removing jobid =%d on switch =%d at node_mgr",
+					/*debug("No of comm jobs=%d after removing jobid =%d on switch =%d at node_mgr",
 						switch_record_table[node_ptr->leaf_switch].comm_jobs,
-						job_ptr->job_id,node_ptr->leaf_switch);
+						job_ptr->job_id,node_ptr->leaf_switch);*/
 				}
 #endif
 			}
