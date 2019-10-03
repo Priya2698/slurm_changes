@@ -1967,8 +1967,9 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	int comm, best_comm;
 	float ratio, best_ratio;
 	int suff, best_suff;
-	int min;
-	int best_min;
+	int busy_nodes;
+/*	int min;
+	int best_min;*/
 #endif
 	if (job_ptr->req_switch) {
 		time_t     time_now;
@@ -2205,7 +2206,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 #else
 		best_comm = best_suff = 0;
 		best_ratio = 0;
-		best_min =0;
+		//best_min =0;
 #endif
 		for (j=0; j<switch_record_cnt; j++) {
 			if (switches_node_cnt[j] == 0)
@@ -2225,19 +2226,35 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
                         }
 #else
 			comm = switch_record_table[j].comm_jobs;
-			ratio = comm/switches_node_cnt[j];
+			busy_nodes = nodes_per_switch - switches_node_cnt[j];
+			if (busy_nodes == 0)
+				ratio = 0;
+			else
+				ratio = (comm/busy_nodes) + (busy_nodes/nodes_per_switch);
 
 			if ((want_nodes-alloc_nodes)<switches_node_cnt[j])
 				suff=1;
 			else
 				suff=0;
-			if (switches_node_cnt[j] >= nodes_per_switch/4)
+			/*if (switches_node_cnt[j] >= nodes_per_switch/4)
 				min=1;
 			else 
-				min=0;
+				min=0;*/
 			if (job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
-
-				if(best_fit_nodes == 0 || (suff && !best_suff)){
+				if ((best_fit_nodes == 0) ||
+			            (ratio < best_ratio) ||
+				    ((ratio == best_ratio) && (suff && !best_suff) ) ||
+				    ((ratio == best_ratio) && ((suff && best_suff) || (!suff && !best_suff)) && (comm < best_comm))){
+		                        best_ratio = ratio;
+                                        best_suff = suff;
+                                        best_comm = comm;
+                                        best_fit_nodes = switches_node_cnt[j];
+                                        best_fit_location = j;
+				}
+				    
+			}
+			/*Version 2
+			 	if(best_fit_nodes == 0 || (suff && !best_suff)){
 					best_ratio = ratio;
 					best_suff = suff;
 					best_comm = comm;
@@ -2268,7 +2285,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
                                         best_fit_nodes = switches_node_cnt[j];
                                         best_fit_location = j;
 				}
-			}
+			*/
 			else{
 				if((best_fit_nodes == 0) ||
 				   (ratio > best_ratio)){
