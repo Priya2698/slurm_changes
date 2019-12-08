@@ -34,7 +34,7 @@ float recursive(int arr[], int size, int start, int cnt){
 					i,i+(size/2),switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);
 			}
 			else{
-				c = (switch_record_table[arr[i]].comm_jobs + switch_record_table[arr[i+(size/2)]].comm_jobs)/((float)nodes_per_switch);
+				c = (switch_record_table[arr[i]].comm_jobs + switch_record_table[arr[i+(size/2)]].comm_jobs)/(2*(float)nodes_per_switch);
 				hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
                                 debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
 					i,i+(size/2),switch_record_table[arr[i]].comm_jobs,
