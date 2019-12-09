@@ -2194,7 +2194,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 /** Checking which leaf-switches are selected **/
 	for (j = 0; j < switch_record_cnt; j++) {
                 if ((switch_record_table[j].level == 0) && (switches_node_cnt[j]!=0))
-			debug("Leaf switch %d selected under parent switch %d",j,best_fit_inx);
+			debug("Leaf switch %d selected under parent switch %d Nodes = %d Comm_jobs = %d",j,best_fit_inx,switches_node_cnt[j],switch_record_table[j].comm_jobs);
         }
 /**********************************************/
 
