@@ -2230,9 +2230,9 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 			if (busy_nodes == 0)
 				ratio = 0;
 			else
-				ratio = (comm/busy_nodes) + (busy_nodes/nodes_per_switch);
+				ratio = (comm/(float)busy_nodes) + (busy_nodes/(float)nodes_per_switch);
 
-			if ((want_nodes-alloc_nodes)<switches_node_cnt[j])
+			if ((want_nodes-alloc_nodes)<=switches_node_cnt[j])
 				suff=1;
 			else
 				suff=0;
@@ -2290,6 +2290,9 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 				if((best_fit_nodes == 0) ||
 				   (ratio > best_ratio)){
 					//best_fit_cpus = switches_cpu_cnt[j];
+					best_ratio = ratio;
+					best_suff = suff;
+					best_comm = comm;
 					best_fit_nodes = switches_node_cnt[j];
 					best_fit_location =j;
 				}
