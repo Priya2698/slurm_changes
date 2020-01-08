@@ -118,9 +118,9 @@ int hypercube_switch_cnt;
 struct hypercube_switch ***hypercube_switches;
 #endif
 
-#ifdef JOBAWARE
-extern int nodes_per_switch;
-#endif
+//#ifdef JOBAWARE
+//extern int nodes_per_switch;
+//#endif
 
 struct select_nodeinfo {
 	uint16_t magic;		/* magic number */
@@ -2226,11 +2226,11 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
                         }
 #else
 			comm = switch_record_table[j].comm_jobs;
-			busy_nodes = nodes_per_switch - switches_node_cnt[j];
+			busy_nodes = switch_record_table[j].num_nodes - switches_node_cnt[j];
 			if (busy_nodes == 0)
 				ratio = 0;
 			else
-				ratio = (comm/(float)busy_nodes) + (busy_nodes/(float)nodes_per_switch);
+				ratio = (comm/(float)busy_nodes) + (busy_nodes/(float)switch_record_table[j].num_nodes);
 
 			if ((want_nodes-alloc_nodes)<=switches_node_cnt[j])
 				suff=1;
@@ -2253,39 +2253,6 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 				}
 				    
 			}
-			/*Version 2
-			 	if(best_fit_nodes == 0 || (suff && !best_suff)){
-					best_ratio = ratio;
-					best_suff = suff;
-					best_comm = comm;
-					best_min = min;
-					best_fit_nodes = switches_node_cnt[j];
-					best_fit_location = j;
-				}
-				
-				else if ( suff && best_suff &&
-					  ((ratio < best_ratio) ||
-			                  ((ratio == best_ratio) && (comm < best_comm)))){
-			                best_ratio = ratio;
-                                        best_suff = suff;
-                                        best_comm = comm;
-                                        best_min = min;
-                                        best_fit_nodes = switches_node_cnt[j];
-                                        best_fit_location = j;
-				}
-				
-				else if ( !suff && !best_suff &&
-					  ((min && !best_min) || 
-					  ( ((min && best_min)||(!min && !best_min)) && (ratio < best_ratio)) ||
-                                          ( ((min && best_min)||( !min && !best_min)) && (ratio == best_ratio) && (comm < best_comm)))){
-                                        best_ratio = ratio;
-                                        best_suff = suff;
-                                        best_comm = comm;
-                                        best_min = min;
-                                        best_fit_nodes = switches_node_cnt[j];
-                                        best_fit_location = j;
-				}
-			*/
 			else{
 				if((best_fit_nodes == 0) ||
 				   (ratio > best_ratio)){

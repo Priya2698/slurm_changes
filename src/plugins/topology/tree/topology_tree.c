@@ -87,8 +87,9 @@ typedef struct slurm_conf_switches {
 } slurm_conf_switches_t;
 static s_p_hashtbl_t *conf_hashtbl = NULL;
 static char* topo_conf = NULL;
-extern int nodes_per_switch;
-
+// Calculating nodes per switch
+//extern int nodes_per_switch;
+/*****************************/
 static void _destroy_switches(void *ptr);
 static void _free_switch_record_table(void);
 static int  _get_switch_inx(const char *name);
@@ -267,7 +268,6 @@ static void _validate_switches(void)
 	bitstr_t *tmp_bitmap = NULL;
 #ifdef JOBAWARE
 	int cnt =0;
-	int min =node_record_count;
 #endif
 	_free_switch_record_table();
 
@@ -295,8 +295,9 @@ static void _validate_switches(void)
 		}
 		switch_ptr->link_speed = ptr->link_speed;
 #ifdef JOBAWARE		
-		/** initialize no of comm_jobs for job_aware schedluing **/
+		/** initialize no of comm_jobs and nodes for job_aware schedluing **/
 		switch_ptr->comm_jobs = 0;
+		switch_ptr->num_nodes = 0;
 #endif
 
 		if (ptr->nodes) {
@@ -444,23 +445,25 @@ static void _validate_switches(void)
 	for (i=0; i < switch_record_cnt; i++){
 		cnt =0;
 		if (switch_record_table[i].level == 0){
-			char* name;
-			name = strtok (switch_record_table[i].nodes,",");
-			while( name != NULL){
+			hostlist_t hostname_list = NULL;
+			char* hostname = NULL;
+			hostname_list = hostlist_create(switch_record_table[i].nodes);
+			while ((hostname = hostlist_shift(hostname_list))){
 				cnt ++;
-				struct node_record* nd  = find_node_record(name);
-				nd->leaf_switch = i;
-				
-				/*debug("Node_Name= %s switch_name=%s",name,switch_record_table[i].name);*/
-				name = strtok(NULL,",");
+				struct node_record* node_rec = find_node_record(hostname);
+				node_rec->leaf_switch = i;
+				//debug("SwitchName=%s NodeName=%s",switch_record_table[i].name,hostname);
 			}
-			debug("cnt is %d for switch %d",cnt,i);
-			if (cnt < min)
-				min = cnt;			
+			switch_record_table[i].num_nodes = cnt;
+			debug("Switch:%d Count:%d Nodes=%d",i,cnt,switch_record_table[i].num_nodes);
+			if (hostname_list)
+		                hostlist_destroy(hostname_list);
+        		if (hostname)
+                		free(hostname);		
 		}	
 	}
-	nodes_per_switch = min;
-	debug("Nodes_per_switch are %d",nodes_per_switch);
+//	nodes_per_switch = min;
+//	debug("Nodes_per_switch:%d",nodes_per_switch);
 #endif
 
 }
