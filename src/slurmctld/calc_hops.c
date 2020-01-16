@@ -30,8 +30,8 @@ float fatrecursive(int arr[], int size, int start, int cnt){
 			if (arr[i] == arr [i + (size/2)]){
 				c = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes) ;
 				hops=2 + 2*c;
-				debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
-					i,i+(size/2),switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);
+				/*debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+					i,i+(size/2),switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);*/
 			}
 			else{
 				c1 = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes);
@@ -40,10 +40,10 @@ float fatrecursive(int arr[], int size, int start, int cnt){
 					((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[i+(size/2)]].num_nodes);
                                 c = c1+c2+c3/2;
 				hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
-                              debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                /*debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
 					i,i+(size/2),switch_record_table[arr[i]].comm_jobs,
 					switch_record_table[arr[i+(size/2)]].comm_jobs,
-					arr[i],arr[i+(size/2)],c,hops);
+					arr[i],arr[i+(size/2)],c,hops);*/
 			}
 		}
 		else
@@ -63,8 +63,8 @@ float treerecursive(int arr[], int size, int start, int cnt){
                         if (arr[i] == arr [i + (size/2)]){
 			  	c = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes) ;
 				hops=2 + 2*c;
-                                debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
-                                        i,i+(size/2),switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);
+                                /*debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,i+(size/2),switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);*/
                         }
                         else{
                                 c1 = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes);
@@ -73,10 +73,10 @@ float treerecursive(int arr[], int size, int start, int cnt){
                                         ((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[i+(size/2)]].num_nodes);
                                 c = c1+c2+c3;
 				hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
-                                debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                /*debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
                                         i,i+(size/2),switch_record_table[arr[i]].comm_jobs,
                                         switch_record_table[arr[i+(size/2)]].comm_jobs,
-                                        arr[i],arr[i+(size/2)],c,hops);
+                                        arr[i],arr[i+(size/2)],c,hops);*/
                         }
                 }
                 else    
@@ -96,8 +96,8 @@ float fatreduce(int arr[], int size, int start, int cnt){
 		if (arr[i] == arr[i+size]){
                                 c = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes) ;
 		       		hops=2 + 2*c;
-                                debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
-                                        i,i+size,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);
+                                /*debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,i+size,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);*/
 		}
 		else{
 				c1 = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes);
@@ -106,10 +106,10 @@ float fatreduce(int arr[], int size, int start, int cnt){
 					((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[i+size]].num_nodes);
 				c = c1+c2+c3/2;
 		       		hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
-                                debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                /*debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
                                         i,i+size,switch_record_table[arr[i]].comm_jobs,
                                         switch_record_table[arr[i+size]].comm_jobs,
-                                        arr[i],arr[i+size],c,hops);
+                                        arr[i],arr[i+size],c,hops);*/
 		}
 		
 		if (hops > max_hops)
@@ -127,8 +127,8 @@ float treereduce(int arr[], int size, int start, int cnt){
                 if (arr[i] == arr[i+size]){
                                 c = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes) ;
 				hops=2 + 2*c;
-                                debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
-                                        i,i+size,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);
+                                /*debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,i+size,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);*/
                 }
                 else{
 				c1 = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes);
@@ -137,10 +137,10 @@ float treereduce(int arr[], int size, int start, int cnt){
                                         ((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[i+size]].num_nodes);
                                 c = c1+c2+c3;
                                 hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
-                                debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                /*debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
                                         i,i+size,switch_record_table[arr[i]].comm_jobs,
                                         switch_record_table[arr[i+size]].comm_jobs,
-                                        arr[i],arr[i+size],c,hops);
+                                        arr[i],arr[i+size],c,hops);*/
                 }
 
                 if (hops > max_hops)
