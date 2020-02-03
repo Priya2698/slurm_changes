@@ -1,0 +1,1073 @@
+make  all-recursive
+make[1]: Entering directory '/home/priya/project/slurm-19.05.0'
+Making all in auxdir
+make[2]: Entering directory '/home/priya/project/slurm-19.05.0/auxdir'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/priya/project/slurm-19.05.0/auxdir'
+Making all in src
+make[2]: Entering directory '/home/priya/project/slurm-19.05.0/src'
+Making all in api
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: 'libcommon.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: 'libspank.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: 'libeio.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make  all-am
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: 'libeio.o' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: 'libspank.o' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: 'libcommon.o' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libcommon.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libspank.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libeio.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: 'libcommon.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: 'libspank.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: 'libeio.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+Making all in bcast
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/bcast'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/bcast'
+Making all in common
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+Making all in database
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/database'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/database'
+Making all in layouts
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/layouts'
+Making all in unit
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/layouts/unit'
+make[4]: Nothing to be done for 'all'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/layouts/unit'
+Making all in power
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/layouts/power'
+make[4]: Nothing to be done for 'all'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/layouts/power'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/layouts'
+make[4]: Nothing to be done for 'all-am'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/layouts'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/layouts'
+Making all in plugins
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins'
+Making all in accounting_storage
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage'
+Making all in common
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/common'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/common'
+Making all in filetxt
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/filetxt'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/filetxt'
+Making all in mysql
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/mysql'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/database'
+make[6]: 'libslurm_mysql.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/database'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/common'
+make[6]: 'libaccounting_storage_common.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/mysql'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/none'
+Making all in slurmdbd
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/slurmdbd'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage/slurmdbd'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/accounting_storage'
+Making all in acct_gather_energy
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy'
+Making all in cray_aries
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/cray_aries'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/cray_aries'
+Making all in rapl
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/rapl'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/rapl'
+Making all in ibmaem
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/ibmaem'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/ibmaem'
+Making all in ipmi
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/ipmi'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/ipmi'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/none'
+Making all in xcc
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/xcc'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy/xcc'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_energy'
+Making all in acct_gather_profile
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_profile'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_profile/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_profile/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_profile'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_profile'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_profile'
+Making all in acct_gather_interconnect
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_interconnect'
+Making all in ofed
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_interconnect/ofed'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_interconnect/ofed'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_interconnect/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_interconnect/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_interconnect'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_interconnect'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_interconnect'
+Making all in acct_gather_filesystem
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_filesystem'
+Making all in lustre
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_filesystem/lustre'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_filesystem/lustre'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_filesystem/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_filesystem/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_filesystem'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_filesystem'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/acct_gather_filesystem'
+Making all in auth
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/auth'
+Making all in munge
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/auth/munge'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/auth/munge'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/auth/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/auth/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/auth'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/auth'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/auth'
+Making all in burst_buffer
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/burst_buffer'
+Making all in generic
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/burst_buffer/generic'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/burst_buffer/common'
+make[6]: 'libburst_buffer_common.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/burst_buffer/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/burst_buffer/generic'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/burst_buffer'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/burst_buffer'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/burst_buffer'
+Making all in checkpoint
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/checkpoint'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/checkpoint/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/checkpoint/none'
+Making all in ompi
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/checkpoint/ompi'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/checkpoint/ompi'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/checkpoint'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/checkpoint'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/checkpoint'
+Making all in cli_filter
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/cli_filter'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/cli_filter/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/cli_filter/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/cli_filter'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/cli_filter'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/cli_filter'
+Making all in core_spec
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/core_spec'
+Making all in cray_aries
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/core_spec/cray_aries'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/core_spec/cray_aries'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/core_spec/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/core_spec/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/core_spec'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/core_spec'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/core_spec'
+Making all in cred
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/cred'
+Making all in munge
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/cred/munge'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/cred/munge'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/cred/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/cred/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/cred'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/cred'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/cred'
+Making all in ext_sensors
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/ext_sensors'
+Making all in rrd
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/ext_sensors/rrd'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/ext_sensors/rrd'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/ext_sensors/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/ext_sensors/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/ext_sensors'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/ext_sensors'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/ext_sensors'
+Making all in gpu
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gpu'
+Making all in generic
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gpu/generic'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gpu/generic'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gpu'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gpu'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gpu'
+Making all in gres
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gres'
+Making all in common
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/common'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/common'
+Making all in gpu
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/gpu'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/common'
+make[6]: 'libgres_common.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/gpu'
+Making all in nic
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/nic'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/common'
+make[6]: 'libgres_common.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/nic'
+Making all in mic
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/mic'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/common'
+make[6]: 'libgres_common.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/mic'
+Making all in mps
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/mps'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/common'
+make[6]: 'libgres_common.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gres/mps'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/gres'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gres'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/gres'
+Making all in jobacct_gather
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather'
+Making all in common
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/common'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/common'
+Making all in linux
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/linux'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/common'
+make[6]: 'libjobacct_gather_common.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/linux'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/none'
+Making all in cgroup
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/cgroup'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/common'
+make[6]: 'libjobacct_gather_common.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather/cgroup'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobacct_gather'
+Making all in jobcomp
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp'
+Making all in elasticsearch
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp/elasticsearch'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp/elasticsearch'
+Making all in filetxt
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp/filetxt'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp/filetxt'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp/none'
+Making all in script
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp/script'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp/script'
+Making all in mysql
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp/mysql'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/database'
+make[6]: 'libslurm_mysql.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/database'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp/mysql'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/jobcomp'
+Making all in job_container
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_container'
+Making all in cncu
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_container/cncu'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_container/cncu'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_container/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_container/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_container'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_container'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_container'
+Making all in job_submit
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit'
+Making all in all_partitions
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/all_partitions'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/all_partitions'
+Making all in cray_aries
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/cray_aries'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/cray_aries'
+Making all in defaults
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/defaults'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/defaults'
+Making all in logging
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/logging'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/logging'
+Making all in lua
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/lua'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/lua'
+Making all in partition
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/partition'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/partition'
+Making all in pbs
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/pbs'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/pbs'
+Making all in require_timelimit
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/require_timelimit'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/require_timelimit'
+Making all in throttle
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/throttle'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit/throttle'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/job_submit'
+Making all in launch
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/launch'
+Making all in slurm
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/launch/slurm'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/launch/slurm'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/launch'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/launch'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/launch'
+Making all in mcs
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs'
+Making all in account
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs/account'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs/account'
+Making all in group
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs/group'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs/group'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs/none'
+Making all in user
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs/user'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs/user'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/mcs'
+Making all in mpi
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/mpi'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/mpi/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/mpi/none'
+Making all in openmpi
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/mpi/openmpi'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/mpi/openmpi'
+Making all in pmi2
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/mpi/pmi2'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/slurmd/common'
+make[6]: 'libslurmd_reverse_tree_math.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/slurmd/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/mpi/pmi2'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/mpi'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/mpi'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/mpi'
+Making all in node_features
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/node_features'
+Making all in knl_cray
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/node_features/knl_cray'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/node_features/knl_cray'
+Making all in knl_generic
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/node_features/knl_generic'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/node_features/knl_generic'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/node_features'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/node_features'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/node_features'
+Making all in power
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/power'
+Making all in common
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/power/common'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/power/common'
+Making all in cray_aries
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/power/cray_aries'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/power/cray_aries'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/power/none'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/power/common'
+make[6]: 'libpower_common.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/power/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/power/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/power'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/power'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/power'
+Making all in preempt
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/preempt'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/preempt/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/preempt/none'
+Making all in partition_prio
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/preempt/partition_prio'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/preempt/partition_prio'
+Making all in qos
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/preempt/qos'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/preempt/qos'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/preempt'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/preempt'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/preempt'
+Making all in priority
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/priority'
+Making all in basic
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/priority/basic'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/priority/basic'
+Making all in multifactor
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/priority/multifactor'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/priority/multifactor'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/priority'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/priority'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/priority'
+Making all in proctrack
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/proctrack'
+Making all in linuxproc
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/proctrack/linuxproc'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/proctrack/linuxproc'
+Making all in pgid
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/proctrack/pgid'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/proctrack/pgid'
+Making all in cgroup
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/proctrack/cgroup'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/proctrack/cgroup'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/proctrack'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/proctrack'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/proctrack'
+Making all in route
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/route'
+Making all in default
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/route/default'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/route/default'
+Making all in topology
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/route/topology'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/route/topology'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/route'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/route'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/route'
+Making all in sched
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/sched'
+Making all in backfill
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/sched/backfill'
+/bin/bash ../../../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../../../.. -I../../../../slurm  -I../../../.. -I../../../../src/common   -g -O2 -pthread -Werror -ggdb3 -Wall -g -O1 -fno-strict-aliasing -DJOBAWARE -MT backfill.lo -MD -MP -MF .deps/backfill.Tpo -c -o backfill.lo backfill.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../../.. -I../../../../slurm -I../../../.. -I../../../../src/common -g -O2 -pthread -Werror -ggdb3 -Wall -g -O1 -fno-strict-aliasing -DJOBAWARE -MT backfill.lo -MD -MP -MF .deps/backfill.Tpo -c backfill.c  -fPIC -DPIC -o .libs/backfill.o
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../../.. -I../../../../slurm -I../../../.. -I../../../../src/common -g -O2 -pthread -Werror -ggdb3 -Wall -g -O1 -fno-strict-aliasing -DJOBAWARE -MT backfill.lo -MD -MP -MF .deps/backfill.Tpo -c backfill.c -o backfill.o >/dev/null 2>&1
+mv -f .deps/backfill.Tpo .deps/backfill.Plo
+/bin/bash ../../../../libtool  --tag=CC   --mode=link gcc  -g -O2 -pthread -Werror -ggdb3 -Wall -g -O1 -fno-strict-aliasing -DJOBAWARE -module -avoid-version --export-dynamic  -o sched_backfill.la -rpath /usr/local/lib/slurm backfill_wrapper.lo backfill.lo  
+libtool: link: rm -fr  .libs/sched_backfill.a .libs/sched_backfill.la .libs/sched_backfill.lai .libs/sched_backfill.so
+libtool: link: gcc -shared  -fPIC -DPIC  .libs/backfill_wrapper.o .libs/backfill.o    -g -O2 -pthread -ggdb3 -g -O1   -pthread -Wl,-soname -Wl,sched_backfill.so -o .libs/sched_backfill.so
+libtool: link: ar cr .libs/sched_backfill.a  backfill_wrapper.o backfill.o
+libtool: link: ranlib .libs/sched_backfill.a
+libtool: link: ( cd ".libs" && rm -f "sched_backfill.la" && ln -s "../sched_backfill.la" "sched_backfill.la" )
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/sched/backfill'
+Making all in builtin
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/sched/builtin'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/sched/builtin'
+Making all in hold
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/sched/hold'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/sched/hold'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/sched'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/sched'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/sched'
+Making all in select
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/select'
+Making all in other
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/select/other'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/select/other'
+Making all in cons_res
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/select/cons_res'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/select/cons_res'
+Making all in cons_tres
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/select/cons_tres'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/select/cons_tres'
+Making all in cray_aries
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/select/cray_aries'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/select/cray_aries'
+Making all in linear
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/select/linear'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/select/linear'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/select'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/select'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/select'
+Making all in site_factor
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/site_factor'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/site_factor/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/site_factor/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/site_factor'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/site_factor'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/site_factor'
+Making all in slurmctld
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/slurmctld'
+Making all in nonstop
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/slurmctld/nonstop'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/slurmctld/nonstop'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/slurmctld'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/slurmctld'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/slurmctld'
+Making all in switch
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/switch'
+Making all in cray_aries
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/switch/cray_aries'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/switch/cray_aries'
+Making all in generic
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/switch/generic'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/switch/generic'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/switch/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/switch/none'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/switch'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/switch'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/switch'
+Making all in task
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/task'
+Making all in cray_aries
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/task/cray_aries'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/task/cray_aries'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/task/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/task/none'
+Making all in affinity
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/task/affinity'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/task/affinity'
+Making all in cgroup
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/task/cgroup'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/task/cgroup'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/task'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/task'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/task'
+Making all in topology
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/topology'
+Making all in 3d_torus
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/topology/3d_torus'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/topology/3d_torus'
+Making all in hypercube
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/topology/hypercube'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/topology/hypercube'
+Making all in node_rank
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/topology/node_rank'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/topology/node_rank'
+Making all in none
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/topology/none'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/topology/none'
+Making all in tree
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/topology/tree'
+/bin/bash ../../../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../../../.. -I../../../../slurm  -I../../../.. -I../../../../src/common   -g -O2 -pthread -Werror -ggdb3 -Wall -g -O1 -fno-strict-aliasing -DJOBAWARE -MT topology_tree.lo -MD -MP -MF .deps/topology_tree.Tpo -c -o topology_tree.lo topology_tree.c
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../../.. -I../../../../slurm -I../../../.. -I../../../../src/common -g -O2 -pthread -Werror -ggdb3 -Wall -g -O1 -fno-strict-aliasing -DJOBAWARE -MT topology_tree.lo -MD -MP -MF .deps/topology_tree.Tpo -c topology_tree.c  -fPIC -DPIC -o .libs/topology_tree.o
+libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../../.. -I../../../../slurm -I../../../.. -I../../../../src/common -g -O2 -pthread -Werror -ggdb3 -Wall -g -O1 -fno-strict-aliasing -DJOBAWARE -MT topology_tree.lo -MD -MP -MF .deps/topology_tree.Tpo -c topology_tree.c -o topology_tree.o >/dev/null 2>&1
+mv -f .deps/topology_tree.Tpo .deps/topology_tree.Plo
+/bin/bash ../../../../libtool  --tag=CC   --mode=link gcc  -g -O2 -pthread -Werror -ggdb3 -Wall -g -O1 -fno-strict-aliasing -DJOBAWARE -module -avoid-version --export-dynamic  -o topology_tree.la -rpath /usr/local/lib/slurm topology_tree.lo  
+libtool: link: rm -fr  .libs/topology_tree.a .libs/topology_tree.la .libs/topology_tree.lai .libs/topology_tree.so
+libtool: link: gcc -shared  -fPIC -DPIC  .libs/topology_tree.o    -g -O2 -pthread -ggdb3 -g -O1   -pthread -Wl,-soname -Wl,topology_tree.so -o .libs/topology_tree.so
+libtool: link: ar cr .libs/topology_tree.a  topology_tree.o
+libtool: link: ranlib .libs/topology_tree.a
+libtool: link: ( cd ".libs" && rm -f "topology_tree.la" && ln -s "../topology_tree.la" "topology_tree.la" )
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/topology/tree'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins/topology'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/topology'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins/topology'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/plugins'
+make[4]: Nothing to be done for 'all-am'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/plugins'
+Making all in sacct
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sacct'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: 'full_version.map' is up to date.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libcommon.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libspank.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libeio.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sacct'
+Making all in sacctmgr
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sacctmgr'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sacctmgr'
+Making all in salloc
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/salloc'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/salloc'
+Making all in sattach
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sattach'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sattach'
+Making all in sbatch
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sbatch'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sbatch'
+Making all in sbcast
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sbcast'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/bcast'
+make[4]: 'libfile_bcast.la' is up to date.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/bcast'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: 'full_version.map' is up to date.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libcommon.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libspank.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libeio.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sbcast'
+Making all in scancel
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/scancel'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/scancel'
+Making all in scontrol
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/scontrol'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: 'full_version.map' is up to date.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libcommon.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libspank.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libeio.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/scontrol'
+Making all in sdiag
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sdiag'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sdiag'
+Making all in sinfo
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sinfo'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sinfo'
+Making all in slurmctld
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/slurmctld'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: 'full_version.map' is up to date.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libcommon.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libspank.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libeio.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[4]: 'libdaemonize.la' is up to date.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/slurmctld'
+Making all in slurmd
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/slurmd'
+Making all in common
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/slurmd/common'
+make[4]: Nothing to be done for 'all'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/slurmd/common'
+Making all in slurmd
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/slurmd/slurmd'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: 'libdaemonize.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/bcast'
+make[5]: 'libfile_bcast.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/bcast'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/slurmd/common'
+make[5]: 'libslurmd_common.o' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/slurmd/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/slurmd/common'
+make[5]: 'libslurmd_reverse_tree_math.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/slurmd/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: 'full_version.map' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[7]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: 'libcommon.la' is up to date.
+make[7]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: 'libspank.la' is up to date.
+make[7]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: 'libeio.la' is up to date.
+make[7]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/slurmd/slurmd'
+Making all in slurmstepd
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/slurmd/slurmstepd'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: 'libdaemonize.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/slurmd/common'
+make[5]: 'libslurmd_common.o' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/slurmd/common'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: 'full_version.map' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[7]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: 'libcommon.la' is up to date.
+make[7]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: 'libspank.la' is up to date.
+make[7]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: 'libeio.la' is up to date.
+make[7]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/slurmd/slurmstepd'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/slurmd'
+make[4]: Nothing to be done for 'all-am'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/slurmd'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/slurmd'
+Making all in slurmdbd
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/slurmdbd'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[4]: 'libdaemonize.la' is up to date.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: 'full_version.map' is up to date.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libcommon.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libspank.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: 'libeio.la' is up to date.
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/slurmdbd'
+Making all in smap
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/smap'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/smap'
+Making all in sprio
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sprio'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sprio'
+Making all in squeue
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/squeue'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/squeue'
+Making all in sreport
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sreport'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sreport'
+Making all in srun
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/srun'
+Making all in libsrun
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/srun/libsrun'
+make[4]: Nothing to be done for 'all'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/srun/libsrun'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/src/srun'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/srun/libsrun'
+make[5]: 'libsrun.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/srun/libsrun'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/bcast'
+make[5]: 'libfile_bcast.la' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/bcast'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: 'full_version.map' is up to date.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[6]: Entering directory '/home/priya/project/slurm-19.05.0/src/api'
+make[7]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: 'libcommon.la' is up to date.
+make[7]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: 'libspank.la' is up to date.
+make[7]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: Entering directory '/home/priya/project/slurm-19.05.0/src/common'
+make[7]: 'libeio.la' is up to date.
+make[7]: Leaving directory '/home/priya/project/slurm-19.05.0/src/common'
+make[6]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/src/api'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/src/srun'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/srun'
+Making all in sshare
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sshare'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sshare'
+Making all in sstat
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sstat'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sstat'
+Making all in strigger
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/strigger'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/strigger'
+Making all in sview
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src/sview'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src/sview'
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/src'
+make[3]: Nothing to be done for 'all-am'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/src'
+make[2]: Leaving directory '/home/priya/project/slurm-19.05.0/src'
+Making all in testsuite
+make[2]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite'
+Making all in expect
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite/expect'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite/expect'
+Making all in slurm_unit
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit'
+Making all in api
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/api'
+Making all in manual
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/api/manual'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/api/manual'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/api'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/api'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/api'
+Making all in common
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/common'
+Making all in slurm_protocol_pack
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/common/slurm_protocol_pack'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/common/slurm_protocol_pack'
+Making all in slurmdb_pack
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/common/slurmdb_pack'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/common/slurmdb_pack'
+make[5]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/common'
+make[5]: Nothing to be done for 'all-am'.
+make[5]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/common'
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit/common'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit'
+make[4]: Nothing to be done for 'all-am'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite/slurm_unit'
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/testsuite'
+make[3]: Nothing to be done for 'all-am'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite'
+make[2]: Leaving directory '/home/priya/project/slurm-19.05.0/testsuite'
+Making all in doc
+make[2]: Entering directory '/home/priya/project/slurm-19.05.0/doc'
+Making all in man
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/doc/man'
+Making all in man1
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/doc/man/man1'
+make[4]: Nothing to be done for 'all'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/doc/man/man1'
+Making all in man3
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/doc/man/man3'
+make[4]: Nothing to be done for 'all'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/doc/man/man3'
+Making all in man5
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/doc/man/man5'
+make[4]: Nothing to be done for 'all'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/doc/man/man5'
+Making all in man8
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/doc/man/man8'
+make[4]: Nothing to be done for 'all'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/doc/man/man8'
+make[4]: Entering directory '/home/priya/project/slurm-19.05.0/doc/man'
+make[4]: Nothing to be done for 'all-am'.
+make[4]: Leaving directory '/home/priya/project/slurm-19.05.0/doc/man'
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/doc/man'
+Making all in html
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/doc/html'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/doc/html'
+make[3]: Entering directory '/home/priya/project/slurm-19.05.0/doc'
+make[3]: Nothing to be done for 'all-am'.
+make[3]: Leaving directory '/home/priya/project/slurm-19.05.0/doc'
+make[2]: Leaving directory '/home/priya/project/slurm-19.05.0/doc'
+Making all in etc
+make[2]: Entering directory '/home/priya/project/slurm-19.05.0/etc'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/priya/project/slurm-19.05.0/etc'
+make[2]: Entering directory '/home/priya/project/slurm-19.05.0'
+make[2]: Leaving directory '/home/priya/project/slurm-19.05.0'
+make[1]: Leaving directory '/home/priya/project/slurm-19.05.0'

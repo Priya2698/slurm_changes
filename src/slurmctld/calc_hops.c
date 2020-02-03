@@ -9,17 +9,107 @@
 #include "src/common/slurm_topology.h"
 #include "src/common/switch.h"
 #include "src/common/node_conf.h"
+#include "src/common/xmalloc.h"
 
 #include "src/slurmctld/job_scheduler.h"
 #include "src/slurmctld/proc_req.h"
 #include "src/slurmctld/slurmctld.h"
 
+#include "src/plugins/select/linear/select_linear.h"
+
 extern int switch_levels;
 extern struct switch_record *switch_record_table;
-//extern int nodes_per_switch;
+extern int switch_record_cnt;
+uint32_t* node_cnt;
+
+int cmp(const void *a, const void *b){
+        int idxa = *(int *)a;
+        int idxb = *(int *)b; 
+        if (node_cnt[idxa] != node_cnt[idxb])
+                return node_cnt[idxa] > node_cnt[idxb] ? -1 : 1;
+        else
+                return switch_record_table[idxa].comm_jobs < switch_record_table[idxb].comm_jobs ? -1 : 1;
+}
+
+void balanced_alloc(uint32_t* switch_node_cnt, int* switch_idx, 
+		uint32_t want_nodes, uint32_t* switch_alloc_nodes){
+
+        uint32_t curr_size = want_nodes;
+        uint32_t rem_nodes = want_nodes;
+        int i, nalloc;
+        uint32_t* free_nodes;
+//	uint32_t* switch_alloc_nodes;
+
+        free_nodes = xcalloc(switch_record_cnt, sizeof(uint32_t));
+
+        // Sort the switch_node_cnt array
+        for(i=0; i<switch_record_cnt; i++){
+                switch_idx[i] = i;
+                free_nodes[i] = 0;
+                switch_alloc_nodes[i] = 0;
+        }
+        node_cnt = switch_node_cnt;
+        qsort(switch_idx,switch_record_cnt, sizeof(*switch_idx), cmp);
+        for(i=0; i<switch_record_cnt; i++)
+                free_nodes[i] = switch_node_cnt[switch_idx[i]];
+
+        // Forward pass to allocate nodes equally
+        for(i=0; (i<switch_record_cnt && rem_nodes && free_nodes[i]); i++){
+                while (curr_size > free_nodes[i])
+                        curr_size /= 2;
+                nalloc = (curr_size < rem_nodes) ? curr_size:rem_nodes;
+                debug("%s: found switch %d for allocation: nodes %d "
+                      "allocated %u ", __func__,switch_idx[i], free_nodes[i], nalloc);
+                switch_alloc_nodes[i] = nalloc;
+                free_nodes[i]-=nalloc;
+                rem_nodes-=nalloc;
+        }
+
+        //Backtrack if more nodes required
+        if (rem_nodes)
+                i--;
+        while(rem_nodes>0 && i>=0){
+                nalloc = (free_nodes[i] < rem_nodes) ? free_nodes[i]:rem_nodes;
+                debug("%s: found switch %d for allocation: nodes %d "
+                      "allocated %u ", __func__,switch_idx[i], free_nodes[i], nalloc);
+                switch_alloc_nodes[i] +=nalloc;
+                free_nodes[i]-=nalloc;
+                rem_nodes-=nalloc;
+        }
+
+/*        for (i=0 ; i<switch_record_cnt && switch_alloc_nodes[i] ; i++){
+
+                first = bit_ffs(switches_bitmap[switch_idx[i]]);
+                if (first < 0) {
+                        switch_node_cnt[switch_idx[i]] = 0;
+                        continue;
+                }
+                last  = bit_fls(switches_bitmap[switch_idx[i]]);
+                for (j=first; j<=last && j<=switch_alloc_nodes[i]; j++) {
+                        if (!bit_test(switches_bitmap[switch_idx[i]], j))
+                                continue;
+
+                        if (bit_test(bitmap, j)) {
+                                // node on multiple leaf switches
+                                // and already selected 
+                                continue;
+                        }
+                        bit_set(bitmap, j);
+                        *alloc_nodes++;
+                        *rem_cpus -= _get_avail_cpus(job_ptr, j);
+                        *total_cpus += _get_total_cpus(j);
+                        if ((*alloc_nodes > max_nodes) ||
+                            ((*alloc_nodes >= want_nodes) && (*rem_cpus <= 0)))
+                                break;
+                }
+        }*/
+	debug("Balanced allocation complete");
+	xfree(free_nodes);
+//	xfree(switch_alloc_nodes);
+        return;
+}
 
 /* cnt is total node count */
-
 float fatrecursive(int arr[], int size, int start, int cnt){
 	float hops = 0;
 	float max_hops = 0;
@@ -153,7 +243,7 @@ float treereduce(int arr[], int size, int start, int cnt){
 void hop(struct job_record *job_ptr)
 {
 	FILE *f;
-	f = fopen ("/home/ubuntu/workload/hops.txt", "a");
+	f = fopen ("/home/priya/workload/hops.txt", "a");
 	int i, begin, end;
 	int size = job_ptr->node_cnt;
 	int switches[size];
@@ -162,7 +252,6 @@ void hop(struct job_record *job_ptr)
 
         size = pow(2,ceil(log(size)/log(2)));
         debug("Original size:%d, switch levels:%d",size,switch_levels);
-
 
 	begin = bit_ffs(job_ptr->node_bitmap);
 	if (begin >=0 )
