@@ -22,7 +22,8 @@ extern struct switch_record *switch_record_table;
 extern int switch_record_cnt;
 uint32_t* node_cnt;
 
-int cmp(const void *a, const void *b){
+// To sort array in descending order
+int desc_cmp(const void *a, const void *b){
         int idxa = *(int *)a;
         int idxb = *(int *)b; 
         if (node_cnt[idxa] != node_cnt[idxb])
@@ -30,18 +31,31 @@ int cmp(const void *a, const void *b){
         else
                 return switch_record_table[idxa].comm_jobs < switch_record_table[idxb].comm_jobs ? -1 : 1;
 }
-
-void balanced_alloc(uint32_t* switch_node_cnt, int* switch_idx, 
-		uint32_t want_nodes, uint32_t* switch_alloc_nodes){
+// To sort array in increasing order 
+int inc_cmp(const void *a, const void *b){
+	int idxa = *(int *)a;
+	int idxb = *(int *)b;
+	if (node_cnt[idxa] == 0)
+		return 1;
+	else if (node_cnt[idxb] == 0)
+		return -1;
+	else
+		if(node_cnt[idxa] != node_cnt[idxb])
+			return node_cnt[idxa] < node_cnt[idxb] ? -1 : 1;
+		else
+			return switch_record_table[idxa].comm_jobs > switch_record_table[idxb].comm_jobs ? -1 : 1;
+}
+// For balanced allocation in select/linear
+void balanced_alloc(struct job_record *job_ptr,uint32_t* switch_node_cnt,
+	       	int* switch_idx, uint32_t want_nodes, uint32_t* switch_alloc_nodes){
 
         uint32_t curr_size = want_nodes;
         uint32_t rem_nodes = want_nodes;
         int i, nalloc;
         uint32_t* free_nodes;
-//	uint32_t* switch_alloc_nodes;
 
         free_nodes = xcalloc(switch_record_cnt, sizeof(uint32_t));
-
+	
         // Sort the switch_node_cnt array
         for(i=0; i<switch_record_cnt; i++){
                 switch_idx[i] = i;
@@ -49,64 +63,135 @@ void balanced_alloc(uint32_t* switch_node_cnt, int* switch_idx,
                 switch_alloc_nodes[i] = 0;
         }
         node_cnt = switch_node_cnt;
-        qsort(switch_idx,switch_record_cnt, sizeof(*switch_idx), cmp);
+        if (job_ptr->comment && strcmp(job_ptr->comment,"1")==0)
+       		qsort(switch_idx,switch_record_cnt, sizeof(*switch_idx), desc_cmp);
+	else 
+		qsort(switch_idx,switch_record_cnt, sizeof(*switch_idx), inc_cmp);
         for(i=0; i<switch_record_cnt; i++)
                 free_nodes[i] = switch_node_cnt[switch_idx[i]];
 
-        // Forward pass to allocate nodes equally
-        for(i=0; (i<switch_record_cnt && rem_nodes && free_nodes[i]); i++){
-                while (curr_size > free_nodes[i])
-                        curr_size /= 2;
-                nalloc = (curr_size < rem_nodes) ? curr_size:rem_nodes;
-                debug("%s: found switch %d for allocation: nodes %d "
-                      "allocated %u ", __func__,switch_idx[i], free_nodes[i], nalloc);
-                switch_alloc_nodes[i] = nalloc;
-                free_nodes[i]-=nalloc;
-                rem_nodes-=nalloc;
-        }
+	if (job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+        	// Forward pass to allocate nodes equally
+        	for(i=0; (i<switch_record_cnt && rem_nodes && free_nodes[i]); i++){
+                	while (curr_size > free_nodes[i])
+                        	curr_size /= 2;
+                	nalloc = (curr_size < rem_nodes) ? curr_size:rem_nodes;
+                	debug("%s: found switch %d for allocation: nodes %d "
+                      		"allocated %u ", __func__,switch_idx[i], free_nodes[i], nalloc);
+                	switch_alloc_nodes[i] = nalloc;
+                	free_nodes[i]-=nalloc;
+                	rem_nodes-=nalloc;
+        	}
 
-        //Backtrack if more nodes required
-        if (rem_nodes)
-                i--;
-        while(rem_nodes>0 && i>=0){
-                nalloc = (free_nodes[i] < rem_nodes) ? free_nodes[i]:rem_nodes;
-                debug("%s: found switch %d for allocation: nodes %d "
-                      "allocated %u ", __func__,switch_idx[i], free_nodes[i], nalloc);
-                switch_alloc_nodes[i] +=nalloc;
-                free_nodes[i]-=nalloc;
-                rem_nodes-=nalloc;
-        }
+        	//Backtrack if more nodes required
+        	if (rem_nodes)
+        	        i--;
+        	while(rem_nodes>0 && i>=0){
+                	nalloc = (free_nodes[i] < rem_nodes) ? free_nodes[i]:rem_nodes;
+                	debug("%s: found switch %d for allocation: nodes %d "
+                      		"allocated %u ", __func__,switch_idx[i], free_nodes[i], nalloc);
+                	switch_alloc_nodes[i] +=nalloc;
+                	free_nodes[i]-=nalloc;
+                	rem_nodes-=nalloc;
+			i--;
+        	}
+	}
+	else{
+		for(i=0; (i<switch_record_cnt && rem_nodes && free_nodes[i]); i++){
+			nalloc = (free_nodes[i] < rem_nodes) ? free_nodes[i]:rem_nodes;
+			debug("%s: found switch %d for allocation: nodes %d "
+                                "allocated %u ", __func__,switch_idx[i], free_nodes[i], nalloc);
+			switch_alloc_nodes[i] = nalloc;
+			free_nodes[i]-=nalloc;
+			rem_nodes-=nalloc;
+		}
+	}
 
-/*        for (i=0 ; i<switch_record_cnt && switch_alloc_nodes[i] ; i++){
-
-                first = bit_ffs(switches_bitmap[switch_idx[i]]);
-                if (first < 0) {
-                        switch_node_cnt[switch_idx[i]] = 0;
-                        continue;
-                }
-                last  = bit_fls(switches_bitmap[switch_idx[i]]);
-                for (j=first; j<=last && j<=switch_alloc_nodes[i]; j++) {
-                        if (!bit_test(switches_bitmap[switch_idx[i]], j))
-                                continue;
-
-                        if (bit_test(bitmap, j)) {
-                                // node on multiple leaf switches
-                                // and already selected 
-                                continue;
-                        }
-                        bit_set(bitmap, j);
-                        *alloc_nodes++;
-                        *rem_cpus -= _get_avail_cpus(job_ptr, j);
-                        *total_cpus += _get_total_cpus(j);
-                        if ((*alloc_nodes > max_nodes) ||
-                            ((*alloc_nodes >= want_nodes) && (*rem_cpus <= 0)))
-                                break;
-                }
-        }*/
 	debug("Balanced allocation complete");
 	xfree(free_nodes);
-//	xfree(switch_alloc_nodes);
         return;
+}
+
+float expected_fatrecursive(int arr[], int comm_jobs[], int size, int start, uint32_t cnt){
+        float hops = 0;
+        float max_hops = 0;
+        int i = 0;
+        float c=0, c1=0, c2=0, c3=0;
+        for (i =start; i<start +(size/2); i++){
+                if ( i+(size/2) < cnt ){
+                        if (arr[i] == arr [i + (size/2)]){
+                                c = (comm_jobs[i])/((float)switch_record_table[arr[i]].num_nodes) ;
+                                hops=2 + 2*c;
+                       /*         debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,i+(size/2),switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);*/
+                        }
+                        else{
+                                c1 = (comm_jobs[i])/((float)switch_record_table[arr[i]].num_nodes);
+                                c2 = (comm_jobs[i+(size/2)])/((float)switch_record_table[arr[i+(size/2)]].num_nodes);
+                                c3 = (comm_jobs[i] + comm_jobs[i+(size/2)])/((float)switch_record_table[arr[i]].num_nodes + 
+						(float)switch_record_table[arr[i+(size/2)]].num_nodes);
+                                c = c1+c2+c3/2;
+                                hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
+                       /*         debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                        i,i+(size/2),switch_record_table[arr[i]].comm_jobs,
+                                        switch_record_table[arr[i+(size/2)]].comm_jobs,
+                                        arr[i],arr[i+(size/2)],c,hops);*/
+                        }
+                }
+                else
+                        continue;
+                if (hops > max_hops)
+                        max_hops = hops;
+        }
+        return max_hops;
+}
+
+float expected_hops(struct job_record *job_ptr, uint32_t *switch_alloc_nodes,
+			int *switch_idx, uint32_t want_nodes){
+	int i,j,k=0;
+	uint32_t size = want_nodes;
+        int switches[size];
+	int comm_jobs[size];
+	float hops = 0;
+        float max_hops =0;
+	debug("Original size:%d, switch levels:%d",size,switch_levels);
+// Generate required arrays
+	debug("Generating arrays");
+	for(i=0; i<switch_record_cnt && k<size;i++){
+		j = 0;
+		debug ("i:%d switch_idx:%d switch_alloc_nodes:%d",i,
+				switch_idx[i],switch_alloc_nodes[i]);
+		while(j < switch_alloc_nodes[i]){
+			switches[k] = switch_idx[i];
+			if (job_ptr->comment && strcmp(job_ptr->comment,"1")==0)
+				comm_jobs[k] = switch_record_table[switch_idx[i]].comm_jobs
+							+ switch_alloc_nodes[i];
+			else
+				comm_jobs[k] = switch_record_table[switch_idx[i]].comm_jobs;
+		//	debug("Index=%d Switch=%d Comm_jobs=%d",k,switches[k],comm_jobs[k]);
+			k++;
+			j++;		
+		}
+	}
+	size = pow(2,ceil(log(size)/log(2)));
+// Calculate Hops for recursive halving
+        float rec_fathops =0;
+        uint32_t rec_size = size;
+        int msize = 1; // Message size for recursive halving calculations
+        debug("Expected fat tree recursive hops");
+        while(rec_size > 1){
+                max_hops = 0;
+                for (i=0; i<want_nodes; i+= rec_size){
+                        hops = expected_fatrecursive(switches,comm_jobs,rec_size,i,want_nodes);
+                        if (hops > max_hops)
+                                max_hops = hops;
+                }
+                debug(" rec_fathops = %d x %f ",msize,max_hops);
+                rec_fathops += msize * max_hops;
+                msize = msize * 2;
+                rec_size = rec_size /2;
+        }
+	return rec_fathops;
 }
 
 /* cnt is total node count */
@@ -243,7 +328,7 @@ float treereduce(int arr[], int size, int start, int cnt){
 void hop(struct job_record *job_ptr)
 {
 	FILE *f;
-	f = fopen ("/home/priya/workload/hops.txt", "a");
+	f = fopen ("/home/ubuntu/workload/hops.txt", "a");
 	int i, begin, end;
 	int size = job_ptr->node_cnt;
 	int switches[size];
