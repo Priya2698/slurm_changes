@@ -70,7 +70,8 @@ struct switch_record {
 extern struct switch_record *switch_record_table;  /* ptr to switch records */
 extern int switch_record_cnt;		/* size of switch_record_table */
 extern int switch_levels;               /* number of switch levels     */
-
+extern struct table *alloc_node_table;
+extern struct table *switch_idx_table;
 /*****************************************************************************\
  *  Hypercube SWITCH topology data structures
  *  defined here but is really hypercube plugin related

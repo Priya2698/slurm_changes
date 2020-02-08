@@ -40,7 +40,6 @@
 
 #include "src/common/slurm_topology.h"
 #include "src/slurmctld/slurmctld.h"
-
 /*
  * part_cr_record keeps track of the number of running jobs on
  * this node in this partition. Slurm allows a node to be

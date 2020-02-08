@@ -46,11 +46,14 @@
 #include "src/common/timers.h"
 #include "src/common/xmalloc.h"
 #include "src/common/xstring.h"
-
+#include "src/slurmctld/calc_hops.h"
 /* defined here but is really tree plugin related */
 struct switch_record *switch_record_table = NULL;
 int switch_record_cnt = 0;
 int switch_levels = 0;               /* number of switch levels     */
+
+struct table *alloc_node_table = NULL;
+struct table *switch_idx_table = NULL;
 
 /* defined here but is really hypercube plugin related */
 int hypercube_dimensions = 0; 

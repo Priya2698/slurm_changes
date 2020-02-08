@@ -92,6 +92,10 @@ static char* topo_conf = NULL;
 /*****************************/
 static void _destroy_switches(void *ptr);
 static void _free_switch_record_table(void);
+#ifdef JOBAWARE
+static void delete_table(struct table *t);
+struct table *createTable(int size);
+#endif
 static int  _get_switch_inx(const char *name);
 static void _log_switches(void);
 static int  _node_name2bitmap(char *node_names, bitstr_t **bitmap, 
@@ -103,7 +107,8 @@ extern int  _read_topo_file(slurm_conf_switches_t **ptr_array[]);
 static void _find_child_switches (int sw);
 static void _validate_switches(void);
 
-
+extern struct table *alloc_node_table;
+extern struct table *switch_idx_table;
 /*
  * init() is called when the plugin is loaded, before any other functions
  *	are called.  Put global initialization here.
@@ -280,6 +285,15 @@ static void _validate_switches(void)
 
 	switch_record_table = xmalloc(sizeof(struct switch_record) *
 				      switch_record_cnt);
+#ifdef JOBAWARE
+/** Creating hashmaps required for maintaining order **/
+/** Fix the static size **/
+	
+	delete_table(alloc_node_table);
+	delete_table(switch_idx_table);
+	alloc_node_table = createTable(2000);
+	switch_idx_table = createTable(2000);
+#endif
 	multi_homed_bitmap = bit_alloc(node_record_count);
 	switch_ptr = switch_record_table;
 	for (i=0; i<switch_record_cnt; i++, switch_ptr++) {
@@ -518,6 +532,24 @@ static void _free_switch_record_table(void)
 		switch_levels = 0;
 	}
 }
+#ifdef JOBAWARE
+static void delete_table(struct table *t){
+	if(t){
+                for (int i=0;i<t->size;i++)
+                        free(t->list[i]);
+                free(t);
+        }
+}
+struct table *createTable(int size){
+    struct table *t = (struct table*)malloc(sizeof(struct table));
+    t->size = size;
+    t->list = (struct node**)malloc(sizeof(struct node*)*size);
+    int i;
+    for(i=0;i<size;i++)
+        t->list[i] = NULL;
+    return t;
+}
+#endif
 
 /* Return count of switch configuration entries read */
 extern int  _read_topo_file(slurm_conf_switches_t **ptr_array[])

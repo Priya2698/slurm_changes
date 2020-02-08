@@ -117,6 +117,8 @@ struct hypercube_switch *hypercube_switch_table;
 int hypercube_switch_cnt;
 struct hypercube_switch ***hypercube_switches;
 #endif
+extern struct table* alloc_node_table;
+extern struct table* switch_idx_table;
 
 struct select_nodeinfo {
 	uint16_t magic;		/* magic number */
@@ -1956,6 +1958,9 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	int leaf_switch_count = 0;
 	int best_fit_location = 0;
 	long time_waiting = 0;
+        int index = 0;   // To keep track of switch_idx and switch_alloc_nodes arrays
+        int *switch_idx;
+        int* switch_alloc_nodes;
 #endif
 
 #if ! (defined JOBAWARE1) && ! (defined JOBAWARE2)
@@ -1973,15 +1978,12 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	float hops, bal_hops;
 	int suff, best_suff;
 	int busy_nodes;
-	int index = 0;   // To keep track of switch_idx and switch_alloc_nodes arrays
-	int *switch_idx;
-	uint32_t* switch_alloc_nodes;
 #endif
 
 #if (defined JOBAWARE1) || (defined JOBAWARE2)
 	int bal_rem_cpus, bal_total_cpus = 0; /* counterpart of rem_cpus, total_cpus in balanced approach*/
 	uint32_t bal_alloc_nodes = 0;  /*counterpart of alloc_nodes in balanced appraoch*/
-	uint32_t *bal_switch_alloc_nodes;  /*allocated nodes per switch in balanced approach*/
+	int *bal_switch_alloc_nodes;  /*allocated nodes per switch in balanced approach*/
 	bitstr_t *bal_bitmap;          /* bitmap generated in balanced approach*/
 	int *bal_switch_idx;	/* order of switches in balanced approach*/
 	uint32_t nalloc = 0;
@@ -2014,11 +2016,11 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 #if (defined JOBAWARE1) || (defined JOBAWARE2)
 //	bal_bitmap = xcalloc(node_record_count, sizeof(bitstr_t));
 	bal_switch_idx = xcalloc(switch_record_cnt, sizeof(int));
-	bal_switch_alloc_nodes = xcalloc(switch_record_cnt, sizeof(uint32_t));
+	bal_switch_alloc_nodes = xcalloc(switch_record_cnt, sizeof(int));
 #endif
-#ifdef JOBAWARE2
+#ifndef JOBAWARE1
 	switch_idx = xcalloc(switch_record_cnt, sizeof(int));
-	switch_alloc_nodes = xcalloc(switch_record_cnt, sizeof(uint32_t));
+	switch_alloc_nodes = xcalloc(switch_record_cnt, sizeof(int));
 	for (i=0; i<switch_record_cnt; i++){
 		switch_idx[i] = -1;
 		switch_alloc_nodes[i] = 0;
@@ -2267,7 +2269,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
                         bal_rem_cpus -= _get_avail_cpus(job_ptr, j);
                         bal_total_cpus += _get_total_cpus(j);
 			if (nalloc <= 0){
-				debug("Switch %d complete",bal_switch_idx[i]);
+			//	debug("Switch %d complete",bal_switch_idx[i]);
 				break;
 			}
                         if ((bal_alloc_nodes > max_nodes) ||
@@ -2376,9 +2378,8 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 
 			switches_required[best_fit_location] = 1;
 			bit_set(bitmap, i);
-#ifdef JOBAWARE2
+// Set the switch_alloc_nodes 
 			switch_alloc_nodes[index]++;
-#endif
 			alloc_nodes++;
 			rem_cpus -= _get_avail_cpus(job_ptr, i);
 			total_cpus += _get_total_cpus(i);
@@ -2387,10 +2388,9 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 				break;
 		}
 		switches_node_cnt[best_fit_location] = 0;
-#ifdef JOBAWARE2
+// Set the switch index and increment the counter
 		switch_idx[index] = best_fit_location;
 		index++;
-#endif
 		leaf_switch_count++;
 		if (job_ptr->req_switch > 0) {
 			if (time_waiting >= job_ptr->wait4switch) {
@@ -2413,6 +2413,10 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 		}
 	}
 #endif
+#if !(defined JOBAWARE1) && !(defined JOBAWARE2) 
+	insert(alloc_node_table, job_ptr->job_id,switch_alloc_nodes,switch_record_cnt);
+        insert(switch_idx_table, job_ptr->job_id,switch_idx,switch_record_cnt);
+#endif
 
 #ifdef JOBAWARE1
 	bit_nclear(bitmap, 0, node_record_count - 1);
@@ -2422,14 +2426,17 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	alloc_nodes = bal_alloc_nodes;
 	rem_cpus = bal_rem_cpus;
 	total_cpus = bal_total_cpus;
-	debug("bit_set_count:%d alloc_node:%d rem_cpus=%d total_cpus=%d",
-			bit_set_count(bitmap),alloc_nodes,rem_cpus,total_cpus);
+	/*debug("bit_set_count:%d alloc_node:%d rem_cpus=%d total_cpus=%d",
+			bit_set_count(bitmap),alloc_nodes,rem_cpus,total_cpus);*/
+        insert(alloc_node_table, job_ptr->job_id,bal_switch_alloc_nodes,switch_record_cnt);
+        insert(switch_idx_table, job_ptr->job_id,bal_switch_idx,switch_record_cnt);
+
 #endif
 
 #ifdef JOBAWARE2
-	debug("Calculate JOBAWARE hops");
+//	debug("Calculate JOBAWARE hops");
 	hops = expected_hops(job_ptr, switch_alloc_nodes, switch_idx,want_nodes);
-	debug("Calculate BALANCEED hops");
+//	debug("Calculate BALANCEED hops");
 	bal_hops = expected_hops(job_ptr, bal_switch_alloc_nodes, bal_switch_idx,want_nodes);
 	debug ("Balanced Hops: %f Hops: %f",bal_hops,hops);
 
@@ -2442,12 +2449,17 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
         		alloc_nodes = bal_alloc_nodes;
         		rem_cpus = bal_rem_cpus;
         		total_cpus = bal_total_cpus;
-        		debug("bit_set_count:%d alloc_node:%d rem_cpus=%d total_cpus=%d",
-					bit_set_count(bitmap),alloc_nodes,rem_cpus,total_cpus);
+        		insert(alloc_node_table, job_ptr->job_id,bal_switch_alloc_nodes,switch_record_cnt);
+			insert(switch_idx_table, job_ptr->job_id,bal_switch_idx,switch_record_cnt);
+			/*debug("bit_set_count:%d alloc_node:%d rem_cpus=%d total_cpus=%d",
+					bit_set_count(bitmap),alloc_nodes,rem_cpus,total_cpus);*/
 			debug("Balanced approach selected");
 		}
-		else 
+		else{ 
 			debug("Jobaware approach selected");
+			insert(alloc_node_table, job_ptr->job_id,switch_alloc_nodes,switch_record_cnt);
+		        insert(switch_idx_table, job_ptr->job_id,switch_idx,switch_record_cnt);
+		}
 	}
 	else{
 		if (hops < bal_hops){
@@ -2458,12 +2470,17 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
                         alloc_nodes = bal_alloc_nodes;
                         rem_cpus = bal_rem_cpus;
                         total_cpus = bal_total_cpus;
-                        debug("bit_set_count:%d alloc_node:%d rem_cpus=%d total_cpus=%d",
-                                        bit_set_count(bitmap),alloc_nodes,rem_cpus,total_cpus);		
+			insert(alloc_node_table, job_ptr->job_id,bal_switch_alloc_nodes,switch_record_cnt);
+		        insert(switch_idx_table, job_ptr->job_id,bal_switch_idx,switch_record_cnt);
+                        /*debug("bit_set_count:%d alloc_node:%d rem_cpus=%d total_cpus=%d",
+                                        bit_set_count(bitmap),alloc_nodes,rem_cpus,total_cpus);*/	
 			debug("Balanced approach selected");
 		}
-		else
+		else{
 			debug("Jobaware approach selected");
+			insert(alloc_node_table, job_ptr->job_id,switch_alloc_nodes,switch_record_cnt);
+        		insert(switch_idx_table, job_ptr->job_id,switch_idx,switch_record_cnt);
+		}
 	}
 #endif
 
@@ -2490,7 +2507,7 @@ fini:	if (rc == SLURM_SUCCESS) {
 	xfree(bal_switch_idx);
 	xfree(bal_switch_alloc_nodes);
 #endif
-#ifdef JOBAWARE2
+#ifndef JOBAWARE1
 	xfree(switch_idx);
 	xfree(switch_alloc_nodes);
 #endif

@@ -14,7 +14,7 @@
 #include "src/slurmctld/job_scheduler.h"
 #include "src/slurmctld/proc_req.h"
 #include "src/slurmctld/slurmctld.h"
-
+#include "src/slurmctld/calc_hops.h"
 #include "src/plugins/select/linear/select_linear.h"
 
 extern int switch_levels;
@@ -22,6 +22,59 @@ extern struct switch_record *switch_record_table;
 extern int switch_record_cnt;
 uint32_t* node_cnt;
 
+#define SWITCH_ORDER_SIZE 100
+extern struct table *alloc_node_table;
+extern struct table *switch_idx_table;
+
+// Functions for maintaining a hashmap
+/*struct table *createTable(int size){
+    struct table *t = (struct table*)malloc(sizeof(struct table));
+    t->size = size;
+    t->list = (struct node**)malloc(sizeof(struct node*)*size);
+    int i;
+    for(i=0;i<size;i++)
+        t->list[i] = NULL;
+    return t;
+}*/
+uint32_t hashCode(struct table *t,uint32_t key){
+    if(key<0)
+        return -(key%t->size);
+    return key%t->size;
+}
+void insert(struct table *t,uint32_t key,int* val, int n){
+    uint32_t pos = hashCode(t,key);
+    struct node *list = t->list[pos];
+    struct node *newNode = (struct node*)malloc(sizeof(struct node));
+    newNode->key = key;
+    for(int i=0;i<n;i++)
+        newNode->val[i] = val[i];
+    newNode->n = n;
+    newNode->next = list;
+    t->list[pos] = newNode;
+}
+int lookup(struct table *t,uint32_t key, int*arr, int *n){
+    uint32_t pos = hashCode(t,key);
+    debug("JobId=%d Pos=%d",key,pos);
+    struct node *list = t->list[pos];
+    struct node *temp = list;
+    while(temp){
+        if(temp->key==key){
+            *n = temp->n;
+            for(int i=0;i<*n;i++)
+                arr[i] = temp->val[i];
+            return 0;
+        }
+        temp = temp->next;
+    }
+    return -1;
+}
+/*void delete_table(struct table* t){
+	if(t){
+		for (int i=0;i<t->size;i++)
+                	free(t->list[i]);
+        	free(t);
+	}
+}*/
 // To sort array in descending order
 int desc_cmp(const void *a, const void *b){
         int idxa = *(int *)a;
@@ -47,7 +100,7 @@ int inc_cmp(const void *a, const void *b){
 }
 // For balanced allocation in select/linear
 void balanced_alloc(struct job_record *job_ptr,uint32_t* switch_node_cnt,
-	       	int* switch_idx, uint32_t want_nodes, uint32_t* switch_alloc_nodes){
+	       	int* switch_idx, uint32_t want_nodes, int* switch_alloc_nodes){
 
         uint32_t curr_size = want_nodes;
         uint32_t rem_nodes = want_nodes;
@@ -107,7 +160,7 @@ void balanced_alloc(struct job_record *job_ptr,uint32_t* switch_node_cnt,
 		}
 	}
 
-	debug("Balanced allocation complete");
+//	debug("Balanced allocation complete");
 	xfree(free_nodes);
         return;
 }
@@ -146,7 +199,7 @@ float expected_fatrecursive(int arr[], int comm_jobs[], int size, int start, uin
         return max_hops;
 }
 
-float expected_hops(struct job_record *job_ptr, uint32_t *switch_alloc_nodes,
+float expected_hops(struct job_record *job_ptr, int *switch_alloc_nodes,
 			int *switch_idx, uint32_t want_nodes){
 	int i,j,k=0;
 	uint32_t size = want_nodes;
@@ -178,7 +231,7 @@ float expected_hops(struct job_record *job_ptr, uint32_t *switch_alloc_nodes,
         float rec_fathops =0;
         uint32_t rec_size = size;
         int msize = 1; // Message size for recursive halving calculations
-        debug("Expected fat tree recursive hops");
+        //debug("Expected fat tree recursive hops");
         while(rec_size > 1){
                 max_hops = 0;
                 for (i=0; i<want_nodes; i+= rec_size){
@@ -186,7 +239,7 @@ float expected_hops(struct job_record *job_ptr, uint32_t *switch_alloc_nodes,
                         if (hops > max_hops)
                                 max_hops = hops;
                 }
-                debug(" rec_fathops = %d x %f ",msize,max_hops);
+                //debug(" rec_fathops = %d x %f ",msize,max_hops);
                 rec_fathops += msize * max_hops;
                 msize = msize * 2;
                 rec_size = rec_size /2;
@@ -329,30 +382,56 @@ void hop(struct job_record *job_ptr)
 {
 	FILE *f;
 	f = fopen ("/home/ubuntu/workload/hops.txt", "a");
-	int i, begin, end;
+	int i,j, begin, end,k=0;
 	int size = job_ptr->node_cnt;
 	int switches[size];
 	int index = 0;
 	struct node_record *node_ptr;
-
-        size = pow(2,ceil(log(size)/log(2)));
+	int *switch_idx;
+	int *switch_alloc_nodes;
+	int switch_result;
+	int node_result;
+	int *n = (int*)malloc(sizeof(int));	
         debug("Original size:%d, switch levels:%d",size,switch_levels);
 
-	begin = bit_ffs(job_ptr->node_bitmap);
-	if (begin >=0 )
-		end = bit_fls(job_ptr->node_bitmap);
-	else
-		end = -1;
-	for (i=begin; i<=end; i++){
-		if(!bit_test(job_ptr->node_bitmap, i))
-			continue;
-		node_ptr = node_record_table_ptr + i;
-		switches[index]= node_ptr->leaf_switch;
-		/*debug("Node name = %s , switches[%d]=%d",
-			node_ptr->name,index,switches[index]);*/
-		index+=1;
+	switch_idx = xcalloc(switch_record_cnt, sizeof(int));
+        switch_alloc_nodes = xcalloc(switch_record_cnt, sizeof(int));
+	
+	switch_result = lookup(switch_idx_table,job_ptr->job_id,switch_idx,n);
+	node_result = lookup(alloc_node_table,job_ptr->job_id,switch_alloc_nodes,n);	
+	
+	if(switch_result == 0 && node_result == 0){
+		if (*n != switch_record_cnt)
+			debug("Arrays are of inconsistent size");
+		debug("Generating arrays");
+        	for(i=0; i<switch_record_cnt && k<size;i++){
+                	j = 0;
+               		debug ("i:%d switch_idx:%d switch_alloc_nodes:%d",i,
+                                switch_idx[i],switch_alloc_nodes[i]);
+                	while(j < switch_alloc_nodes[i]){
+                        	switches[k] = switch_idx[i];
+                        k++;j++;
+                	}
+        	}	
 	}
-
+	else {
+		debug("THIS SHOULD NEVER HAPPEN: KEY WAS NOT FOUND");
+		begin = bit_ffs(job_ptr->node_bitmap);
+        	if (begin >=0 )
+                	end = bit_fls(job_ptr->node_bitmap);
+        	else
+                	end = -1;
+       		for (i=begin; i<=end; i++){
+                	if(!bit_test(job_ptr->node_bitmap, i))
+                        	continue;
+                	node_ptr = node_record_table_ptr + i;
+                	switches[index]= node_ptr->leaf_switch;
+                	//debug("Node name = %s , switches[%d]=%d",
+                	//node_ptr->name,index,switches[index]);
+                	index+=1;
+        	}
+	}
+	size = pow(2,ceil(log(size)/log(2)));
 	float hops = 0;
 	float max_hops =0;
 
@@ -377,7 +456,7 @@ void hop(struct job_record *job_ptr)
 	float rec_treehops =0;
         rec_size = size;
         msize =1; // Message size for recursive halving calculations
-        debug("Calculating tree recursive hops");
+        //debug("Calculating tree recursive hops");
         while(rec_size > 1){
                 max_hops = 0;
                 for (i=0; i<job_ptr->node_cnt; i+= rec_size){
@@ -396,14 +475,14 @@ void hop(struct job_record *job_ptr)
 // Calculate Hops for reduce
 	float red_fathops =0;
 	int red_size = 1;
-	debug("Calculating fat tree reduce hops");
+	//debug("Calculating fat tree reduce hops");
 	while(red_size < size){
 		red_fathops += fatreduce(switches,red_size,0,job_ptr->node_cnt);
 		red_size *=2;
 	}
         float red_treehops =0;
         red_size = 1;
-        debug("Calculating tree reduce hops");
+        //debug("Calculating tree reduce hops");
         while(red_size < size){
                 red_treehops += treereduce(switches,red_size,0,job_ptr->node_cnt);
                 red_size *=2;
@@ -420,4 +499,7 @@ void hop(struct job_record *job_ptr)
 	fputs(temp,f);
 	fprintf(f,"\n");
 	fclose(f);
+	free(n);
+	xfree(switch_idx);
+	xfree(switch_alloc_nodes);
 }
