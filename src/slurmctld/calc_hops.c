@@ -381,7 +381,7 @@ float treereduce(int arr[], int size, int start, int cnt){
 void hop(struct job_record *job_ptr)
 {
 	FILE *f;
-	f = fopen ("/home/ubuntu/workload/hops.txt", "a");
+	f = fopen ("/home/priya/workload/hops.txt", "a");
 	int i,j, begin, end,k=0;
 	int size = job_ptr->node_cnt;
 	int switches[size];

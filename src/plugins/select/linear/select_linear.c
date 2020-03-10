@@ -1942,6 +1942,11 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 			  uint32_t min_nodes, uint32_t max_nodes,
 			  uint32_t req_nodes)
 {
+// Get overhead
+	struct timeval time_st,time_end;
+	long oh_sec,oh_ms;
+	gettimeofday(&time_st,NULL);
+
 	bitstr_t **switches_bitmap;		/* nodes on this switch */
 	int       *switches_cpu_cnt;		/* total CPUs on switch */
 	uint32_t  *switches_node_cnt;		/* total nodes on switch */
@@ -2489,6 +2494,10 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 		rc = SLURM_SUCCESS;
 	} else
 		rc = EINVAL;
+	gettimeofday(&time_end,NULL);
+	oh_sec = time_end.tv_sec - time_st.tv_sec;
+	oh_ms = time_end.tv_usec - time_st.tv_usec;
+	debug("Start:%ld %ld |End:%ld %ld |Overhead:%ld %ld",time_st.tv_sec,time_st.tv_usec,time_end.tv_sec,time_end.tv_usec,oh_sec,oh_ms);
 
 fini:	if (rc == SLURM_SUCCESS) {
 		/* Job's total_cpus is needed for SELECT_MODE_WILL_RUN */
