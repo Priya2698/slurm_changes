@@ -149,6 +149,69 @@ float treereduce(int arr[], int size, int start, int cnt){
         return max_hops;
 }
 
+float binomial(int arr[], int size, int cnt){
+        float hops = 0;
+        float max_hops = 0;
+        int i = 0;
+        float c=0, c1=0, c2=0, c3=0;
+        for (i = 0; i<size; i++){
+                if (arr[i] == arr[i+size]){
+                                c = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes) ;
+                                hops=2 + 2*c;
+                                debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,i+size,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);
+                }
+                else{
+                                c1 = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes);
+                                c2 = (switch_record_table[arr[i+size]].comm_jobs)/((float)switch_record_table[arr[i+size]].num_nodes);
+                                c3 = (switch_record_table[arr[i]].comm_jobs + switch_record_table[arr[i+size]].comm_jobs)/
+                                        ((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[i+size]].num_nodes);
+                                c = c1+c2+c3/2;
+                                hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
+                                debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                        i,i+size,switch_record_table[arr[i]].comm_jobs,
+                                        switch_record_table[arr[i+size]].comm_jobs,
+                                        arr[i],arr[i+size],c,hops);
+                }
+
+                if (hops > max_hops)
+                        max_hops = hops;
+        }
+        return max_hops;
+}
+
+float ring(int arr[], int cnt){
+        float hops = 0;
+        float max_hops = 0;
+        int i = 0;
+        float c=0, c1=0, c2=0, c3=0;
+        for (i=0; i<cnt; i++){
+                int j = (i+1)%cnt;
+                if (arr[i] == arr[j]){
+                                c = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes) ;
+                                hops=2 + 2*c;
+                                debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,j,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);
+                }
+                else{
+                                c1 = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes);
+                                c2 = (switch_record_table[arr[j]].comm_jobs)/((float)switch_record_table[arr[j]].num_nodes);
+                                c3 = (switch_record_table[arr[i]].comm_jobs + switch_record_table[arr[j]].comm_jobs)/
+                                        ((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[j]].num_nodes);
+                                c = c1+c2+c3/2;
+                                hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
+                                debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                        i,j,switch_record_table[arr[i]].comm_jobs,
+                                        switch_record_table[arr[j]].comm_jobs,
+                                        arr[i],arr[j],c,hops);
+                }
+
+                if (hops > max_hops)
+                        max_hops = hops;
+        }
+        return (max_hops*(cnt-1));
+}
+
 
 void hop(struct job_record *job_ptr)
 {
@@ -234,15 +297,27 @@ void hop(struct job_record *job_ptr)
                 red_treehops += treereduce(switches,red_size,0,job_ptr->node_cnt);
                 red_size *=2;
         }
+// Calculate binomial hops
+        float bin_hops = 0;
+        int bin_size = 1;
+        debug("Calculating binomial hops");
+        while (bin_size < size){
+                bin_hops += binomial(switches, bin_size, job_ptr->node_cnt);
+                bin_size *=2;
+        }
+// Ring Hops
+        debug("Calculating ring hops");
+        float ring_hops = ring(switches, job_ptr->node_cnt);
 
-	char temp[100];
-	
-	if (job_ptr->comment)
-		sprintf(temp,"%s %"PRIu32" %s %f %f %f %f ",job_ptr->name,job_ptr->job_id,job_ptr->comment,rec_fathops,rec_treehops,red_fathops,red_treehops);
-	else 
-		sprintf(temp,"%s %"PRIu32" 0 %f %f %f %f ",job_ptr->name,job_ptr->job_id,rec_fathops,rec_treehops,red_fathops,red_treehops);
+        char temp[150];
 
-	debug("Recursive FatHops:%f TreeHops:%f | Reduce FatHops = %f Treehops =%f | temp: %s",rec_fathops,rec_treehops,red_fathops,red_treehops,temp);
+        if (job_ptr->comment)
+                sprintf(temp,"%s %"PRIu32" %s %f %f %f %f %f %f",job_ptr->name,job_ptr->job_id,job_ptr->comment,rec_fathops,rec_treehops,red_fathops,red_treehops,bin_hops,ring_hops);
+        else
+                sprintf(temp,"%s %"PRIu32" 0 %f %f %f %f %f %f",job_ptr->name,job_ptr->job_id,rec_fathops,rec_treehops,red_fathops,red_treehops,bin_hops,ring_hops);
+
+        debug("Recursive FatHops:%f TreeHops:%f | Reduce FatHops = %f Treehops =%f | Binomial:%f Ring:%f | temp: %s",rec_fathops,rec_treehops,red_fathops,red_treehops,bin_hops,ring_hops,temp);
+
 	fputs(temp,f);
 	fprintf(f,"\n");
 	fclose(f);

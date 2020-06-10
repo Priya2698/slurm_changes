@@ -2240,7 +2240,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 				min=1;
 			else 
 				min=0;*/
-			if (job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+			if (job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
 				if ((best_fit_nodes == 0) ||
 			            (ratio < best_ratio) ||
 				    ((ratio == best_ratio) && (suff && !best_suff) ) ||
