@@ -1943,9 +1943,9 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 			  uint32_t req_nodes)
 {
 // Get overhead
-	struct timeval time_st,time_end;
-	long oh_sec,oh_ms;
-	gettimeofday(&time_st,NULL);
+	//struct timeval time_st,time_end;
+	//long oh_sec,oh_ms;
+	//gettimeofday(&time_st,NULL);
 
 	bitstr_t **switches_bitmap;		/* nodes on this switch */
 	int       *switches_cpu_cnt;		/* total CPUs on switch */
@@ -2322,7 +2322,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 				suff=1;
 			else
 				suff=0;
-			if (job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+			if (job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
 				if ((best_fit_nodes == 0) ||
 			            (ratio < best_ratio) ||
 				    ((ratio == best_ratio) && (suff && !best_suff) ) ||
@@ -2445,7 +2445,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	bal_hops = expected_hops(job_ptr, bal_switch_alloc_nodes, bal_switch_idx,want_nodes);
 	debug ("Balanced Hops: %f Hops: %f",bal_hops,hops);
 
-	if (job_ptr->comment && strcmp(job_ptr->comment,"1")==0){
+	if (job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
 		if (hops > bal_hops){
 			bit_nclear(bitmap, 0, node_record_count - 1);
         		for (i=0 ; i < node_record_count; i++)
@@ -2494,10 +2494,10 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 		rc = SLURM_SUCCESS;
 	} else
 		rc = EINVAL;
-	gettimeofday(&time_end,NULL);
-	oh_sec = time_end.tv_sec - time_st.tv_sec;
-	oh_ms = time_end.tv_usec - time_st.tv_usec;
-	debug("Start:%ld %ld |End:%ld %ld |Overhead:%ld %ld",time_st.tv_sec,time_st.tv_usec,time_end.tv_sec,time_end.tv_usec,oh_sec,oh_ms);
+	//gettimeofday(&time_end,NULL);
+	//oh_sec = time_end.tv_sec - time_st.tv_sec;
+	//oh_ms = time_end.tv_usec - time_st.tv_usec;
+	//debug("Start:%ld %ld |End:%ld %ld |Overhead:%ld %ld",time_st.tv_sec,time_st.tv_usec,time_end.tv_sec,time_end.tv_usec,oh_sec,oh_ms);
 
 fini:	if (rc == SLURM_SUCCESS) {
 		/* Job's total_cpus is needed for SELECT_MODE_WILL_RUN */
