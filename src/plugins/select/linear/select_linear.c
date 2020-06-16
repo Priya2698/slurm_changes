@@ -2188,13 +2188,13 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 #ifndef JOBAWARE
 	debug("Default Allocation");
 #else
-	debug("JobAware Allocation");
+	debug("Greedy Allocation");
 #endif
 
 /** Checking which leaf-switches are selected **/
 	for (j = 0; j < switch_record_cnt; j++) {
                 if ((switch_record_table[j].level == 0) && (switches_node_cnt[j]!=0))
-			debug("Leaf switch %d selected under parent switch %d Nodes = %d Comm_jobs = %d",j,best_fit_inx,switches_node_cnt[j],switch_record_table[j].comm_jobs);
+			debug("Leaf_switch:%d Parent_switch:%d Nodes:%d Comm_jobs:%d",j,best_fit_inx,switches_node_cnt[j],switch_record_table[j].comm_jobs);
         }
 /**********************************************/
 
@@ -2268,14 +2268,14 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 		}
 #if SELECT_DEBUG
 #ifndef JOBAWARE
-		debug("%s: found switch %d for allocation: nodes %d cpus %d "
-		       "allocated %u", __func__, best_fit_location,
+		debug("%s: found switch:%d for allocation- nodes:%d cpus:%d "
+		       "allocated:%u", __func__, best_fit_location,
 		       best_fit_nodes, best_fit_cpus, alloc_nodes);
 #endif
 #endif
 #ifdef JOBAWARE
-                debug("%s: found switch %d for allocation: nodes %d "
-                      "allocated %u ratio=%f comm=%d suff=%d", __func__,
+                debug("%s: found switch:%d for allocation- nodes:%d "
+                      "allocated:%u ratio:%f comm:%d suff:%d", __func__,
                        best_fit_location, best_fit_nodes, alloc_nodes,
                        best_ratio, best_comm, best_suff);
 #endif
