@@ -2234,7 +2234,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 #elif defined JOBAWARE2
 	debug("Adaptive Allocation");
 #else 
-	debug("Default Allocation");
+	debug("Default2 Allocation"); //Should not happen
 #endif
 
 /** Checking which leaf-switches are selected **/
@@ -2350,8 +2350,8 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 		}
 #if SELECT_DEBUG
 #ifndef JOBAWARE2
-		debug("%s: found switch %d for allocation: nodes %d cpus %d "
-		       "allocated %u", __func__, best_fit_location,
+		debug("%s: found switch:%d for allocation- nodes %d cpus:%d "
+		       "allocated:%u", __func__, best_fit_location,
 		       best_fit_nodes, best_fit_cpus, alloc_nodes);
 #endif
 #endif
@@ -2446,7 +2446,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	debug ("Balanced_Hops:%f Greedy_Hops:%f",bal_hops,hops);
 
 	if (job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
-		if (hops > bal_hops){
+		if (hops >= bal_hops){
 			bit_nclear(bitmap, 0, node_record_count - 1);
         		for (i=0 ; i < node_record_count; i++)
                 		if(bit_test(bal_bitmap,i))
@@ -2467,7 +2467,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 		}
 	}
 	else{
-		if (hops < bal_hops){
+		if (hops <= bal_hops){
 			bit_nclear(bitmap, 0, node_record_count - 1);
                         for (i=0 ; i < node_record_count; i++)
                                 if(bit_test(bal_bitmap,i))

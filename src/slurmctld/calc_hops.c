@@ -52,6 +52,7 @@ void insert(struct table *t,uint32_t key,int* val, int n){
     newNode->next = list;
     t->list[pos] = newNode;
 }
+// Arr is the array where the lookup result is stored if key is found
 int lookup(struct table *t,uint32_t key, int*arr, int *n){
     uint32_t pos = hashCode(t,key);
     //debug("JobId=%d Pos=%d",key,pos);
@@ -606,21 +607,22 @@ float ring(int arr[], int cnt){
 void hop(struct job_record *job_ptr)
 {
 	FILE *f;
-	f = fopen ("/home/priya/workload/hops.txt", "a");
+	f = fopen ("/home/ubuntu/workload/hops.txt", "a");
 	int i,j, begin, end,k=0;
 	int size = job_ptr->node_cnt;
 	int switches[size];
 	int index = 0;
 	struct node_record *node_ptr;
-	int *switch_idx;
-	int *switch_alloc_nodes;
-	int switch_result;
-	int node_result;
-	int *n = (int*)malloc(sizeof(int));	
+	int *switch_idx; //To store the result of switch_idx_table lookup
+	int *switch_alloc_nodes; //To store the result of alloc_node_table lookup
+	int switch_result; //To see if switch_array lookup was successful
+	int node_result; // To see if node lookup was successful
+	int *n = (int*)malloc(sizeof(int));
+	int nunique=0; //No of unique switches (lookup does not give the exact number of switches in array)	
         //debug("Original size:%d, switch levels:%d",size,switch_levels);
 
-	switch_idx = xcalloc(switch_record_cnt, sizeof(int));
-        switch_alloc_nodes = xcalloc(switch_record_cnt, sizeof(int));
+	switch_idx = xcalloc(switch_record_cnt, sizeof(int)); // Ordered array of switches selected
+        switch_alloc_nodes = xcalloc(switch_record_cnt, sizeof(int)); //Ordered array of nodes allocated on each switch 
 	
 	switch_result = lookup(switch_idx_table,job_ptr->job_id,switch_idx,n);
 	node_result = lookup(alloc_node_table,job_ptr->job_id,switch_alloc_nodes,n);	
@@ -633,6 +635,7 @@ void hop(struct job_record *job_ptr)
                 	j = 0;
                		debug ("i:%d switch_idx:%d switch_alloc_nodes:%d",i,
                                 switch_idx[i],switch_alloc_nodes[i]);
+			nunique++;
                 	while(j < switch_alloc_nodes[i]){
                         	switches[k] = switch_idx[i];
                         k++;j++;
@@ -656,6 +659,75 @@ void hop(struct job_record *job_ptr)
                 	index+=1;
         	}
 	}
+	// Unlike in greedy here we already have a switch_idx and switch_alloc_nodes array
+	// But they are of fixed size and not the actual size so create new arrays as in master branch 
+	/**** Writing to the debug file ***/
+	// Now create the consolidated arrays
+	int switch_arr[nunique];
+	int alloc_arr[nunique];
+	int comm_arr[nunique];
+	int total_nodes[nunique];
+
+	//int j=-1; // index for switch info and other arrays
+	//prev=-1; // Keep track of previous switch
+	for (i=0;i<nunique;i++){
+		switch_arr[i] = switch_idx[i];
+		comm_arr[i] = switch_record_table[switch_idx[i]].comm_jobs;
+		total_nodes[i] = switch_record_table[switch_idx[i]].num_nodes;
+		alloc_arr[i] = switch_alloc_nodes[i]; // Switch has occured for the first time	
+	}
+	// Now add these to strings 
+	char job_info[100]; //For jobname, id, comment, and nunique
+	char switch_info[2000]; //For switches
+	char alloc_info[2000]; //For allocated nodes
+	char comm_info[2000]; //For comm nodes
+	char total_info[2000]; //For total nodes
+	
+	// Although for experiments comment should always be given
+	if (job_ptr->comment)
+                sprintf(job_info,"%s %"PRIu32" %s %d",job_ptr->name,job_ptr->job_id,job_ptr->comment,nunique);
+        else
+                sprintf(job_info,"%s %"PRIu32" 0 %d",job_ptr->name,job_ptr->job_id,nunique);
+	int i_switch=0;
+	int i_alloc=0;
+	int i_comm=0;
+	int i_total=0;
+
+	for (i=0;i<nunique;i++){
+		i_switch += sprintf(&switch_info[i_switch], "%d ", switch_arr[i]);
+		i_alloc += sprintf(&alloc_info[i_alloc], "%d ", alloc_arr[i]);
+		i_comm += sprintf(&comm_info[i_comm], "%d ", comm_arr[i]);
+		i_total += sprintf(&total_info[i_total], "%d ", total_nodes[i]);
+	}
+	//debug("%s",job_info);
+	//debug("%s", switch_info);
+	//debug("%s", alloc_info);
+	//debug("%s", comm_info);
+	//debug("%s", total_info);	
+
+	// Add this information to a file
+	FILE *info;
+	info = fopen("/home/ubuntu/workload/debug.txt","a");
+	fputs(job_info,info); // Append jobinfo 
+        fprintf(info,"\n");
+	
+	fputs(switch_info,info);
+        fprintf(info,"\n");
+	
+	fputs(alloc_info,info);
+        fprintf(info,"\n");
+
+	fputs(comm_info,info);
+        fprintf(info,"\n");
+
+	fputs(total_info,info);
+        fprintf(info,"\n");
+	fclose(info);
+
+	/**** Writing to debug file over **/	
+
+
+
 	size = pow(2,ceil(log(size)/log(2)));
 	float hops = 0;
 	float max_hops =0;
