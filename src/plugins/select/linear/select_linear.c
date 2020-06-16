@@ -2240,7 +2240,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 /** Checking which leaf-switches are selected **/
 	for (j = 0; j < switch_record_cnt; j++) {
                 if ((switch_record_table[j].level == 0) && (switches_node_cnt[j]!=0))
-			debug("Leaf switch %d selected under parent switch %d Nodes = %d Comm_jobs = %d",j,best_fit_inx,switches_node_cnt[j],switch_record_table[j].comm_jobs);
+			debug("Leaf_switch:%d Parent_switch:%d Nodes:%d Comm_jobs:%d",j,best_fit_inx,switches_node_cnt[j],switch_record_table[j].comm_jobs);
         }
 /**********************************************/
 
@@ -2356,8 +2356,8 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 #endif
 #endif
 #ifdef JOBAWARE2
-                debug("%s: found switch %d for allocation: nodes %d "
-                      "allocated %u ratio=%f comm=%d suff=%d", __func__,
+                debug("%s: found switch:%d for allocation- nodes:%d "
+                      "allocated:%u ratio:%f comm:%d suff:%d", __func__,
                        best_fit_location, best_fit_nodes, alloc_nodes,
                        best_ratio, best_comm, best_suff);
 #endif
@@ -2443,7 +2443,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	hops = expected_hops(job_ptr, switch_alloc_nodes, switch_idx,want_nodes);
 //	debug("Calculate BALANCEED hops");
 	bal_hops = expected_hops(job_ptr, bal_switch_alloc_nodes, bal_switch_idx,want_nodes);
-	debug ("Balanced Hops: %f Hops: %f",bal_hops,hops);
+	debug ("Balanced_Hops:%f Greedy_Hops:%f",bal_hops,hops);
 
 	if (job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
 		if (hops > bal_hops){
@@ -2458,10 +2458,10 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 			insert(switch_idx_table, job_ptr->job_id,bal_switch_idx,switch_record_cnt);
 			/*debug("bit_set_count:%d alloc_node:%d rem_cpus=%d total_cpus=%d",
 					bit_set_count(bitmap),alloc_nodes,rem_cpus,total_cpus);*/
-			debug("Balanced approach selected");
+			debug("Approach_selected:Balanced");
 		}
 		else{ 
-			debug("Jobaware approach selected");
+			debug("Approach_selected:Greedy");
 			insert(alloc_node_table, job_ptr->job_id,switch_alloc_nodes,switch_record_cnt);
 		        insert(switch_idx_table, job_ptr->job_id,switch_idx,switch_record_cnt);
 		}
@@ -2479,10 +2479,10 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 		        insert(switch_idx_table, job_ptr->job_id,bal_switch_idx,switch_record_cnt);
                         /*debug("bit_set_count:%d alloc_node:%d rem_cpus=%d total_cpus=%d",
                                         bit_set_count(bitmap),alloc_nodes,rem_cpus,total_cpus);*/	
-			debug("Balanced approach selected");
+			debug("Approach_selected:Balanced");
 		}
 		else{
-			debug("Jobaware approach selected");
+			debug("Approach_selected:Greedy");
 			insert(alloc_node_table, job_ptr->job_id,switch_alloc_nodes,switch_record_cnt);
         		insert(switch_idx_table, job_ptr->job_id,switch_idx,switch_record_cnt);
 		}

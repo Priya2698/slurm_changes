@@ -54,7 +54,7 @@ void insert(struct table *t,uint32_t key,int* val, int n){
 }
 int lookup(struct table *t,uint32_t key, int*arr, int *n){
     uint32_t pos = hashCode(t,key);
-    debug("JobId=%d Pos=%d",key,pos);
+    //debug("JobId=%d Pos=%d",key,pos);
     struct node *list = t->list[pos];
     struct node *temp = list;
     while(temp){
@@ -129,8 +129,8 @@ void balanced_alloc(struct job_record *job_ptr,uint32_t* switch_node_cnt,
                 	while (curr_size > free_nodes[i])
                         	curr_size /= 2;
                 	nalloc = (curr_size < rem_nodes) ? curr_size:rem_nodes;
-                	debug("%s: found switch %d for allocation: nodes %d "
-                      		"allocated %u ", __func__,switch_idx[i], free_nodes[i], nalloc);
+                	debug("%s: found switch:%d for allocation- nodes:%d "
+                      		"allocated:%u ", __func__,switch_idx[i], free_nodes[i], nalloc);
                 	switch_alloc_nodes[i] = nalloc;
                 	free_nodes[i]-=nalloc;
                 	rem_nodes-=nalloc;
@@ -141,8 +141,8 @@ void balanced_alloc(struct job_record *job_ptr,uint32_t* switch_node_cnt,
         	        i--;
         	while(rem_nodes>0 && i>=0){
                 	nalloc = (free_nodes[i] < rem_nodes) ? free_nodes[i]:rem_nodes;
-                	debug("%s: found switch %d for allocation: nodes %d "
-                      		"allocated %u ", __func__,switch_idx[i], free_nodes[i], nalloc);
+                	debug("%s: found switch:%d for allocation- nodes:%d "
+                      		"allocated:%u ", __func__,switch_idx[i], free_nodes[i], nalloc);
                 	switch_alloc_nodes[i] +=nalloc;
                 	free_nodes[i]-=nalloc;
                 	rem_nodes-=nalloc;
@@ -152,8 +152,8 @@ void balanced_alloc(struct job_record *job_ptr,uint32_t* switch_node_cnt,
 	else{
 		for(i=0; (i<switch_record_cnt && rem_nodes && free_nodes[i]); i++){
 			nalloc = (free_nodes[i] < rem_nodes) ? free_nodes[i]:rem_nodes;
-			debug("%s: found switch %d for allocation: nodes %d "
-                                "allocated %u ", __func__,switch_idx[i], free_nodes[i], nalloc);
+			debug("%s: found switch:%d for allocation- nodes:%d "
+                                "allocated:%u ", __func__,switch_idx[i], free_nodes[i], nalloc);
 			switch_alloc_nodes[i] = nalloc;
 			free_nodes[i]-=nalloc;
 			rem_nodes-=nalloc;
@@ -165,7 +165,7 @@ void balanced_alloc(struct job_record *job_ptr,uint32_t* switch_node_cnt,
         return;
 }
 
-float expected_fatrecursive(int arr[], int comm_jobs[], int size, int start, uint32_t cnt){
+float exp_rhvd(int arr[], int comm_jobs[], int size, int start, uint32_t cnt){
         float hops = 0;
         float max_hops = 0;
         int i = 0;
@@ -199,6 +199,101 @@ float expected_fatrecursive(int arr[], int comm_jobs[], int size, int start, uin
         return max_hops;
 }
 
+float exp_rd(int arr[], int comm_jobs[], int size, int start, int cnt){
+        float hops = 0;
+        float max_hops = 0;
+        int i = 0;
+        float c=0, c1=0, c2=0, c3=0;
+        for (i=start; i < cnt-size; i+=2*size){
+                if (arr[i] == arr[i+size]){
+                                c = (comm_jobs[i])/((float)switch_record_table[arr[i]].num_nodes) ;
+                                hops=2 + 2*c;
+                /*                debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,i+size,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);*/
+                }
+                else{
+                                c1 = (comm_jobs[i])/((float)switch_record_table[arr[i]].num_nodes);
+                                c2 = (comm_jobs[i+size])/((float)switch_record_table[arr[i+size]].num_nodes);
+                                c3 = (comm_jobs[i] + comm_jobs[i+size])/
+                                        ((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[i+size]].num_nodes);
+                                c = c1+c2+c3/2;
+                                hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
+                                /*debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                        i,i+size,switch_record_table[arr[i]].comm_jobs,
+                                        switch_record_table[arr[i+size]].comm_jobs,
+                                        arr[i],arr[i+size],c,hops);*/
+                }
+
+                if (hops > max_hops)
+                        max_hops = hops;
+        }
+        return max_hops;
+}
+
+float exp_binomial(int arr[], int comm_jobs[], int size, int cnt){
+        float hops = 0;
+        float max_hops = 0;
+        int i = 0;
+        float c=0, c1=0, c2=0, c3=0;
+        for (i = 0; i<size; i++){
+                if (arr[i] == arr[i+size]){
+                                c = (comm_jobs[i])/((float)switch_record_table[arr[i]].num_nodes) ;
+                                hops=2 + 2*c;
+                                /*debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,i+size,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);*/
+                }
+                else{
+                                c1 = (comm_jobs[i])/((float)switch_record_table[arr[i]].num_nodes);
+                                c2 = (comm_jobs[i+size])/((float)switch_record_table[arr[i+size]].num_nodes);
+                                c3 = (comm_jobs[i] + comm_jobs[i+size])/
+                                        ((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[i+size]].num_nodes);
+                                c = c1+c2+c3/2;
+                                hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
+                                /*debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                        i,i+size,switch_record_table[arr[i]].comm_jobs,
+                                        switch_record_table[arr[i+size]].comm_jobs,
+                                        arr[i],arr[i+size],c,hops);*/
+                }
+
+                if (hops > max_hops)
+                        max_hops = hops;
+        }
+        return max_hops;
+}
+
+float exp_ring(int arr[], int comm_jobs[], int cnt){
+        float hops = 0;
+        float max_hops = 0;
+        int i = 0;
+        float c=0, c1=0, c2=0, c3=0;
+        for (i=0; i<cnt; i++){
+                int j = (i+1)%cnt;
+                if (arr[i] == arr[j]){
+                                c = (comm_jobs[i])/((float)switch_record_table[arr[i]].num_nodes) ;
+                                hops=2 + 2*c;
+                                /*debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,j,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);*/
+                }
+                else{
+                                c1 = (comm_jobs[i])/((float)switch_record_table[arr[i]].num_nodes);
+                                c2 = (comm_jobs[j])/((float)switch_record_table[arr[j]].num_nodes);
+                                c3 = (comm_jobs[i] + comm_jobs[j])/
+                                        ((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[j]].num_nodes);
+                                c = c1+c2+c3/2;
+                                hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
+                                /*debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                        i,j,switch_record_table[arr[i]].comm_jobs,
+                                        switch_record_table[arr[j]].comm_jobs,
+                                        arr[i],arr[j],c,hops);*/
+                }
+
+                if (hops > max_hops)
+                        max_hops = hops;
+        }
+        return (max_hops*(cnt-1));
+}
+
+
 float expected_hops(struct job_record *job_ptr, int *switch_alloc_nodes,
 			int *switch_idx, uint32_t want_nodes){
 	int i,j,k=0;
@@ -207,9 +302,9 @@ float expected_hops(struct job_record *job_ptr, int *switch_alloc_nodes,
 	int comm_jobs[size];
 	float hops = 0;
         float max_hops =0;
-	debug("Original size:%d, switch levels:%d",size,switch_levels);
+	//debug("Original size:%d, switch levels:%d",size,switch_levels);
 // Generate required arrays
-	debug("Generating arrays");
+	debug("Generating arrays for comparison");
 	for(i=0; i<switch_record_cnt && k<size;i++){
 		j = 0;
 		debug ("i:%d switch_idx:%d switch_alloc_nodes:%d",i,
@@ -228,23 +323,91 @@ float expected_hops(struct job_record *job_ptr, int *switch_alloc_nodes,
 	}
 	size = pow(2,ceil(log(size)/log(2)));
 // Calculate Hops for recursive halving
-        float rec_fathops =0;
-        uint32_t rec_size = size;
-        int msize = 1; // Message size for recursive halving calculations
-        //debug("Expected fat tree recursive hops");
-        while(rec_size > 1){
-                max_hops = 0;
-                for (i=0; i<want_nodes; i+= rec_size){
-                        hops = expected_fatrecursive(switches,comm_jobs,rec_size,i,want_nodes);
-                        if (hops > max_hops)
-                                max_hops = hops;
-                }
+// Find based on which pattern to compare cost(Expected comments- 1:1,1:2,1:3,1:4,1:5)
+// This part should be replaced by a parser later
+	int len_comment = 0;
+	int type = 0;
+
+	if (job_ptr->comment){
+		//len_comment = sizeof(job_ptr->comment)/sizeof(char);
+		len_comment = strlen(job_ptr->comment);
+		//debug("len_comment=%d",len_comment);
+		if (len_comment == 1){
+			debug("No pattern given, should never happen");
+			type = 1;
+		}
+		else
+			type = job_ptr->comment[len_comment-1] - '0';
+		//debug("type:%d",type);
+	}
+	if(type == 1){
+		debug("Cost comparison based on RHVD");
+		float rec_fathops =0;
+        	uint32_t rec_size = size;
+	        int msize = 1; // Message size for recursive halving calculations
+        	//debug("Expected fat tree recursive hops");
+        	while(rec_size > 1){
+                	max_hops = 0;
+                	for (i=0; i<want_nodes; i+= rec_size){
+                        	hops = exp_rhvd(switches,comm_jobs,rec_size,i,want_nodes);
+                        	if (hops > max_hops)
+                                	max_hops = hops;
+                	}
                 //debug(" rec_fathops = %d x %f ",msize,max_hops);
                 rec_fathops += msize * max_hops;
                 msize = msize * 2;
                 rec_size = rec_size /2;
-        }
-	return rec_fathops;
+        	}
+		return rec_fathops;
+	}
+
+	else if(type == 2){
+		debug("Cost comparison based on RD");
+		float red_fathops =0;
+        	int red_size = 1;
+        	//debug("Calculating fat tree reduce hops");
+        	while(red_size < want_nodes){
+                	red_fathops += exp_rd(switches,comm_jobs,red_size,0,want_nodes);
+                	red_size *=2;
+        	}
+		return red_fathops;
+	}
+
+	else if(type == 3){
+		debug("Cost comparison based on Binomial");
+		float bin_hops = 0;
+        	int bin_size = 1;
+       		while (bin_size < want_nodes){
+                	bin_hops += exp_binomial(switches, comm_jobs,bin_size, want_nodes);
+                	bin_size *=2;
+        	}
+		return bin_hops;
+	}
+
+	else if(type == 4){
+		debug("Cost comparsion based on Ring");
+		float ring_hops = exp_ring(switches, comm_jobs,want_nodes);
+		return ring_hops;	
+	}
+	else if(type == 5){
+		// CMC-2D: 30% RD, 70% Binomial
+		debug("Cost comparison based on CMC-2D");	
+		float red_fathops =0;
+                int red_size = 1;
+                while(red_size < want_nodes){
+                        red_fathops += exp_rd(switches, comm_jobs, red_size,0,want_nodes);
+                        red_size *=2;
+                }
+		
+		float bin_hops = 0;
+                int bin_size = 1;
+                while (bin_size < want_nodes){
+                        bin_hops += exp_binomial(switches,comm_jobs, bin_size, want_nodes);
+                        bin_size *=2;
+                }
+                return (0.7*bin_hops+0.3*red_fathops);
+	}
+	return -1; //should never happen
 }
 
 /* cnt is total node count */
@@ -324,8 +487,8 @@ float fatreduce(int arr[], int size, int start, int cnt){
 		if (arr[i] == arr[i+size]){
                                 c = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes) ;
 		       		hops=2 + 2*c;
-                                debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
-                                        i,i+size,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);
+                               /* debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,i+size,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);*/
 		}
 		else{
 				c1 = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes);
@@ -334,10 +497,10 @@ float fatreduce(int arr[], int size, int start, int cnt){
 					((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[i+size]].num_nodes);
 				c = c1+c2+c3/2;
 		       		hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
-                                debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                               /* debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
                                         i,i+size,switch_record_table[arr[i]].comm_jobs,
                                         switch_record_table[arr[i+size]].comm_jobs,
-                                        arr[i],arr[i+size],c,hops);
+                                        arr[i],arr[i+size],c,hops);*/
 		}
 		
 		if (hops > max_hops)
@@ -386,8 +549,8 @@ float binomial(int arr[], int size, int cnt){
 		if (arr[i] == arr[i+size]){
                                 c = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes) ;
                                 hops=2 + 2*c;
-                                debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
-                                        i,i+size,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);
+                                /*debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,i+size,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);*/
                 }
                 else{
                                 c1 = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes);
@@ -396,10 +559,10 @@ float binomial(int arr[], int size, int cnt){
                                         ((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[i+size]].num_nodes);
                                 c = c1+c2+c3/2;
                                 hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
-                                debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                /*debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
                                         i,i+size,switch_record_table[arr[i]].comm_jobs,
                                         switch_record_table[arr[i+size]].comm_jobs,
-                                        arr[i],arr[i+size],c,hops);
+                                        arr[i],arr[i+size],c,hops);*/
                 }
 
                 if (hops > max_hops)
@@ -418,8 +581,8 @@ float ring(int arr[], int cnt){
 		if (arr[i] == arr[j]){
 				c = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes) ;
                                 hops=2 + 2*c;
-                                debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
-                                        i,j,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);
+                                /*debug("%d<->%d : Comm_Jobs=%d Contention=%f Hops=%f Switch =%d",
+                                        i,j,switch_record_table[arr[i]].comm_jobs,c,hops,arr[i]);*/
 		}
 		else{
 				c1 = (switch_record_table[arr[i]].comm_jobs)/((float)switch_record_table[arr[i]].num_nodes);
@@ -428,10 +591,10 @@ float ring(int arr[], int cnt){
                                         ((float)switch_record_table[arr[i]].num_nodes + (float)switch_record_table[arr[j]].num_nodes);
                                 c = c1+c2+c3/2;
                                 hops=2*(switch_levels+1) + 2*(switch_levels+1)*c ;
-                                debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
+                                /*debug("%d<->%d : Comm_jobs=%d,%d Switch =%d,%d Contention=%f Hops=%f",
                                         i,j,switch_record_table[arr[i]].comm_jobs,
                                         switch_record_table[arr[j]].comm_jobs,
-                                        arr[i],arr[j],c,hops);		
+                                        arr[i],arr[j],c,hops);*/		
 		}
 		
 		if (hops > max_hops)
@@ -454,7 +617,7 @@ void hop(struct job_record *job_ptr)
 	int switch_result;
 	int node_result;
 	int *n = (int*)malloc(sizeof(int));	
-        debug("Original size:%d, switch levels:%d",size,switch_levels);
+        //debug("Original size:%d, switch levels:%d",size,switch_levels);
 
 	switch_idx = xcalloc(switch_record_cnt, sizeof(int));
         switch_alloc_nodes = xcalloc(switch_record_cnt, sizeof(int));
@@ -501,7 +664,7 @@ void hop(struct job_record *job_ptr)
 	float rec_fathops =0;
 	int rec_size = size;
 	int msize =1; // Message size for recursive halving calculations
-	debug("Calculating fat tree recursive hops");
+	//debug("Calculating fat tree recursive hops");
 	while(rec_size > 1){
 		max_hops = 0;
 		for (i=0; i<job_ptr->node_cnt; i+= rec_size){
@@ -509,7 +672,7 @@ void hop(struct job_record *job_ptr)
 			if (hops > max_hops)
 				max_hops = hops;
 		}
-		debug(" rec_fathops = %d x %f ",msize,max_hops);
+		//debug(" rec_fathops = %d x %f ",msize,max_hops);
 		rec_fathops += msize * max_hops;
 		msize = msize * 2;
 		rec_size = rec_size /2;
@@ -554,13 +717,13 @@ void hop(struct job_record *job_ptr)
 // Calculate binomial hops
 	float bin_hops = 0;
 	int bin_size = 1;
-	debug("Calculating binomial hops");
+	//debug("Calculating binomial hops");
 	while (bin_size < size){
 		bin_hops += binomial(switches, bin_size, job_ptr->node_cnt);
 		bin_size *=2;
 	}
 // Ring Hops
-	debug("Calculating ring hops");
+	//debug("Calculating ring hops");
 	float ring_hops = ring(switches, job_ptr->node_cnt);
 
 	char temp[150];
