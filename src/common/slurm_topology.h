@@ -64,6 +64,7 @@ struct switch_record {
 //#ifdef JOBAWARE
 	int comm_jobs;                  /* no of communication-intensive jobs on this switch */
 	int num_nodes;                  /* no of direct descendant nodes*/
+	int t2_jobs;                    /* Track no of T2 jobs on a switch */
 //#endif
 };
 

@@ -141,6 +141,7 @@ static void _sync_nodes_to_suspended_job(struct job_record *job_ptr);
 static void _sync_part_prio(void);
 static int  _update_preempt(uint16_t old_enable_preempt);
 
+extern int nodes_per_switch;
 
 /*
  * Setup the global response_cluster_rec
@@ -2658,6 +2659,13 @@ static int _sync_nodes_to_active_job(struct job_record *job_ptr)
 			/*debug("No of comm jobs=%d after jobid =%d on switch =%d at read_config",
 				switch_record_table[node_ptr->leaf_switch].comm_jobs,
 				job_ptr->job_id,node_ptr->leaf_switch);*/
+		}
+		// Update T2 jobs
+		if(job_ptr->details->max_nodes > nodes_per_switch){
+			switch_record_table[node_ptr->leaf_switch].t2_jobs++;
+			debug("T2_jobs=%d after jobid =%d on switch =%d at read_config",
+                                switch_record_table[node_ptr->leaf_switch].t2_jobs,
+                                job_ptr->job_id,node_ptr->leaf_switch);
 		}
 #endif
 

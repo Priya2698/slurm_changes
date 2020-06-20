@@ -40,7 +40,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <sys/types.h>
-
+#include <limits.h>
 #include "slurm/slurm_errno.h"
 #include "src/common/bitstring.h"
 #include "src/common/log.h"
@@ -88,7 +88,7 @@ typedef struct slurm_conf_switches {
 static s_p_hashtbl_t *conf_hashtbl = NULL;
 static char* topo_conf = NULL;
 // Calculating nodes per switch
-//extern int nodes_per_switch;
+extern int nodes_per_switch; // This is for identifying T1 and T2 jobs now
 /*****************************/
 static void _destroy_switches(void *ptr);
 static void _free_switch_record_table(void);
@@ -268,6 +268,7 @@ static void _validate_switches(void)
 	bitstr_t *tmp_bitmap = NULL;
 #ifdef JOBAWARE
 	int cnt =0;
+	
 #endif
 	_free_switch_record_table();
 
@@ -298,6 +299,7 @@ static void _validate_switches(void)
 		/** initialize no of comm_jobs and nodes for job_aware schedluing **/
 		switch_ptr->comm_jobs = 0;
 		switch_ptr->num_nodes = 0;
+		switch_ptr->t2_jobs = 0;
 #endif
 
 		if (ptr->nodes) {
@@ -442,6 +444,9 @@ static void _validate_switches(void)
 
 #ifdef JOBAWARE
 	/** setting the leaf_switch for all nodes **/
+	/** Find the min number of nodes_per_switch for T1 and T2 jobs**/
+	nodes_per_switch = INT_MAX;
+	debug("Nodes_per_switch:%d",nodes_per_switch);
 	for (i=0; i < switch_record_cnt; i++){
 		cnt =0;
 		if (switch_record_table[i].level == 0){
@@ -455,6 +460,8 @@ static void _validate_switches(void)
 				//debug("SwitchName=%s NodeName=%s",switch_record_table[i].name,hostname);
 			}
 			switch_record_table[i].num_nodes = cnt;
+			nodes_per_switch = MIN(nodes_per_switch,cnt);
+			debug("Nodes_per_switch:%d",nodes_per_switch);
 			debug("Switch:%d Count:%d Nodes=%d",i,cnt,switch_record_table[i].num_nodes);
 			if (hostname_list)
 		                hostlist_destroy(hostname_list);
@@ -463,7 +470,7 @@ static void _validate_switches(void)
 		}	
 	}
 //	nodes_per_switch = min;
-//	debug("Nodes_per_switch:%d",nodes_per_switch);
+	debug("Nodes_per_switch:%d",nodes_per_switch);
 #endif
 
 }

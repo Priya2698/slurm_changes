@@ -150,7 +150,7 @@ time_t last_job_update;		/* time of last update to job records */
 
 /** switch record table for updating count of communication jobs **/
 struct switch_record *switch_record_table;
-
+extern int nodes_per_switch;
 List purge_files_list = NULL;	/* job files to delete */
 
 /* Local variables */
@@ -15783,6 +15783,12 @@ static int _suspend_job_nodes(struct job_record *job_ptr, bool indf_susp)
                                        switch_record_table[node_ptr->leaf_switch].comm_jobs,
                                       job_ptr->job_id,node_ptr->leaf_switch);*/
                         }
+			if(job_ptr->details->max_nodes > nodes_per_switch){
+                                switch_record_table[node_ptr->leaf_switch].t2_jobs--;
+                                debug("T2_jobs=%d after jobid:%d on switch:%d at job_mgr",
+                                        switch_record_table[node_ptr->leaf_switch].t2_jobs,
+                                        job_ptr->job_id,node_ptr->leaf_switch);
+                        }
 #endif
 
 		}
@@ -15869,6 +15875,12 @@ static int _resume_job_nodes(struct job_record *job_ptr, bool indf_susp)
                                switch_record_table[node_ptr->leaf_switch].comm_jobs,
                                job_ptr->job_id,node_ptr->leaf_switch);*/
 	        }
+		if(job_ptr->details->max_nodes > nodes_per_switch){
+                        switch_record_table[node_ptr->leaf_switch].t2_jobs++;
+                        debug("T2_jobs=%d after jobid:%d on switch:%d at job_mgr",
+                               switch_record_table[node_ptr->leaf_switch].t2_jobs,
+                               job_ptr->job_id,node_ptr->leaf_switch);
+                }
 #endif
 
 		if (job_ptr->details &&

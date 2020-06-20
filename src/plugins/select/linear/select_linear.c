@@ -119,7 +119,7 @@ struct hypercube_switch ***hypercube_switches;
 #endif
 
 //#ifdef JOBAWARE
-//extern int nodes_per_switch;
+extern int nodes_per_switch;
 //#endif
 
 struct select_nodeinfo {
@@ -1963,14 +1963,7 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	bool sufficient;
 	long time_waiting = 0;
 	int leaf_switch_count = 0;	/* Count of leaf node switches used */
-#ifdef JOBAWARE
-	int comm, best_comm;
-	float ratio, best_ratio;
-	int suff, best_suff;
-	int busy_nodes;
-/*	int min;
-	int best_min;*/
-#endif
+	
 	if (job_ptr->req_switch) {
 		time_t     time_now;
 		time_now = time(NULL);
@@ -2082,6 +2075,20 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 		rc = EINVAL;
 		goto fini;
 	}
+#ifdef JOBAWARE
+	// Check if the lowest level switch is 1 for T1 job
+	if (job_ptr->details->max_nodes <= nodes_per_switch)
+		debug("T1 job #Nodes/switch:%d Requested Nodes:%d",nodes_per_switch,job_ptr->details->max_nodes);
+	else 
+		debug("T2 Job #Nodes/switch:%d Requested Nodes:%d",nodes_per_switch,job_ptr->details->max_nodes);
+	if ((job_ptr->details->max_nodes <= nodes_per_switch) && 
+			switch_record_table[best_fit_inx].level!=0){
+		debug("%s: T1 job cannot be allocated on L2 switch:%d",
+				__func__, best_fit_inx);
+		rc = EINVAL;
+		goto fini;
+	}
+#endif
 
 	/* phase 4: select resources from already allocated leaves */
 	/* Identify usable leafs (within higher switch having best fit) */
@@ -2186,9 +2193,9 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 	/* Compute best-switch nodes available array */
 
 #ifndef JOBAWARE
-	debug("Default Allocation");
+	debug("Default3 Allocation"); //Should not happen
 #else
-	debug("Greedy Allocation");
+	debug("Interference-free Allocation");
 #endif
 
 /** Checking which leaf-switches are selected **/
@@ -2204,8 +2211,8 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 #ifndef JOBAWARE
 		best_fit_cpus = 0;
 #else
-		best_comm = best_suff = 0;
-		best_ratio = 0;
+		//best_comm = best_suff = 0;
+		//best_ratio = 0;
 		//best_min =0;
 #endif
 		for (j=0; j<switch_record_cnt; j++) {
@@ -2225,41 +2232,20 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
                                 best_fit_location = j;
                         }
 #else
-			comm = switch_record_table[j].comm_jobs;
-			busy_nodes = switch_record_table[j].num_nodes - switches_node_cnt[j];
-			if (busy_nodes == 0)
-				ratio = 0;
-			else
-				ratio = (comm/(float)busy_nodes) + (busy_nodes/(float)switch_record_table[j].num_nodes);
-
-			if ((want_nodes-alloc_nodes)<=switches_node_cnt[j])
-				suff=1;
-			else
-				suff=0;
-			/*if (switches_node_cnt[j] >= nodes_per_switch/4)
-				min=1;
-			else 
-				min=0;*/
-			if (job_ptr->comment && strncmp(job_ptr->comment,"1",1)==0){
+			if (job_ptr->details->max_nodes <= nodes_per_switch){
+				// T1 job, there should not be mutiple switches
 				if ((best_fit_nodes == 0) ||
-			            (ratio < best_ratio) ||
-				    ((ratio == best_ratio) && (suff && !best_suff) ) ||
-				    ((ratio == best_ratio) && ((suff && best_suff) || (!suff && !best_suff)) && (comm < best_comm))){
-		                        best_ratio = ratio;
-                                        best_suff = suff;
-                                        best_comm = comm;
+					switches_node_cnt[j]<best_fit_nodes){
                                         best_fit_nodes = switches_node_cnt[j];
                                         best_fit_location = j;
 				}
 				    
 			}
 			else{
+				// T2 job, select most available switches first
 				if((best_fit_nodes == 0) ||
-				   (ratio > best_ratio)){
+				   (switches_node_cnt[j] > best_fit_nodes)){
 					//best_fit_cpus = switches_cpu_cnt[j];
-					best_ratio = ratio;
-					best_suff = suff;
-					best_comm = comm;
 					best_fit_nodes = switches_node_cnt[j];
 					best_fit_location =j;
 				}
@@ -2275,9 +2261,8 @@ static int _job_test_topo(struct job_record *job_ptr, bitstr_t *bitmap,
 #endif
 #ifdef JOBAWARE
                 debug("%s: found switch:%d for allocation- nodes:%d "
-                      "allocated:%u ratio:%f comm:%d suff:%d", __func__,
-                       best_fit_location, best_fit_nodes, alloc_nodes,
-                       best_ratio, best_comm, best_suff);
+                      "allocated:%u", __func__,
+                       best_fit_location, best_fit_nodes, alloc_nodes);
 #endif
 		if (best_fit_nodes == 0)
 			break;

@@ -13,6 +13,6 @@
 #include "src/slurmctld/job_scheduler.h"
 #include "src/slurmctld/proc_req.h"
 #include "src/slurmctld/slurmctld.h"
-//int nodes_per_switch;
+int nodes_per_switch;
 extern int switch_levels;
 extern void hop(struct job_record * job_ptr);

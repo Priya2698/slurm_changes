@@ -127,7 +127,7 @@ static int	_update_node_avail_features(char *node_names,
 static int	_update_node_gres(char *node_names, char *gres);
 static int	_update_node_weight(char *node_names, uint32_t weight);
 static bool 	_valid_node_state_change(uint32_t old, uint32_t new);
-
+extern int nodes_per_switch;
 /* dump_all_node_state - save the state of all nodes to file */
 int dump_all_node_state ( void )
 {
@@ -3796,7 +3796,13 @@ extern void make_node_alloc(struct node_record *node_ptr,
 	        switch_record_table[node_ptr->leaf_switch].comm_jobs++;
                 /*debug("No of comm jobs=%d after jobid =%d on switch =%d at node_mgr",
                        switch_record_table[node_ptr->leaf_switch].comm_jobs,
-                       job_ptr->job_id,node_ptr->leaf_switch);*/
+                       job_ptr->job_id,node_ptr->leaf_switch);*/	
+        }
+	if(job_ptr->details->max_nodes > nodes_per_switch){
+                switch_record_table[node_ptr->leaf_switch].t2_jobs++;
+                debug("T2_jobs=%d after jobid:%d on switch:%d at node_mgr",
+                      switch_record_table[node_ptr->leaf_switch].t2_jobs,
+                      job_ptr->job_id,node_ptr->leaf_switch);
         }
 #endif
 
@@ -3871,7 +3877,14 @@ extern void make_node_comp(struct node_record *node_ptr,
                                 /*debug("No of comm jobs=%d after removing jobid =%d on switch =%d at node_mgr",
                                        switch_record_table[node_ptr->leaf_switch].comm_jobs,
                                       job_ptr->job_id,node_ptr->leaf_switch);*/
-                        }
+			// Update T2 jobs
+			}
+			if(job_ptr->details->max_nodes > nodes_per_switch){
+	                        switch_record_table[node_ptr->leaf_switch].t2_jobs--;
+        	                debug("T2_jobs=%d after jobid:%d on switch:%d at node_mgr",
+                	                switch_record_table[node_ptr->leaf_switch].t2_jobs,
+                        	        job_ptr->job_id,node_ptr->leaf_switch);
+                	}
 #endif
 
 		} else {
@@ -4016,6 +4029,14 @@ void make_node_idle(struct node_record *node_ptr,
 						switch_record_table[node_ptr->leaf_switch].comm_jobs,
 						job_ptr->job_id,node_ptr->leaf_switch);*/
 				}
+				// Update T2 jobs
+	                	if(job_ptr->details->max_nodes > nodes_per_switch){
+        	                	switch_record_table[node_ptr->leaf_switch].t2_jobs--;
+                	        	debug("T2_jobs=%d after jobid =%d on switch =%d at node_mgr",
+                        	        	switch_record_table[node_ptr->leaf_switch].t2_jobs,
+                                		job_ptr->job_id,node_ptr->leaf_switch);
+                		}
+
 #endif
 			}
 			else
