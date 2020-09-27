@@ -291,8 +291,8 @@ static void _validate_switches(void)
 	
 	delete_table(alloc_node_table);
 	delete_table(switch_idx_table);
-	alloc_node_table = createTable(2000);
-	switch_idx_table = createTable(2000);
+	alloc_node_table = createTable(5000);
+	switch_idx_table = createTable(5000);
 #endif
 	multi_homed_bitmap = bit_alloc(node_record_count);
 	switch_ptr = switch_record_table;
