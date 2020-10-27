@@ -15785,9 +15785,9 @@ static int _suspend_job_nodes(struct job_record *job_ptr, bool indf_susp)
                         }
 			if(job_ptr->details->max_nodes > nodes_per_switch){
                                 switch_record_table[node_ptr->leaf_switch].t2_jobs--;
-                                debug("T2_jobs=%d after jobid:%d on switch:%d at job_mgr",
+                                /*debug("T2_jobs=%d after jobid:%d on switch:%d at job_mgr",
                                         switch_record_table[node_ptr->leaf_switch].t2_jobs,
-                                        job_ptr->job_id,node_ptr->leaf_switch);
+                                        job_ptr->job_id,node_ptr->leaf_switch);*/
                         }
 #endif
 
@@ -15877,9 +15877,9 @@ static int _resume_job_nodes(struct job_record *job_ptr, bool indf_susp)
 	        }
 		if(job_ptr->details->max_nodes > nodes_per_switch){
                         switch_record_table[node_ptr->leaf_switch].t2_jobs++;
-                        debug("T2_jobs=%d after jobid:%d on switch:%d at job_mgr",
+                        /*debug("T2_jobs=%d after jobid:%d on switch:%d at job_mgr",
                                switch_record_table[node_ptr->leaf_switch].t2_jobs,
-                               job_ptr->job_id,node_ptr->leaf_switch);
+                               job_ptr->job_id,node_ptr->leaf_switch);*/
                 }
 #endif
 

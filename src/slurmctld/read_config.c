@@ -2663,9 +2663,9 @@ static int _sync_nodes_to_active_job(struct job_record *job_ptr)
 		// Update T2 jobs
 		if(job_ptr->details->max_nodes > nodes_per_switch){
 			switch_record_table[node_ptr->leaf_switch].t2_jobs++;
-			debug("T2_jobs=%d after jobid =%d on switch =%d at read_config",
+			/*debug("T2_jobs=%d after jobid =%d on switch =%d at read_config",
                                 switch_record_table[node_ptr->leaf_switch].t2_jobs,
-                                job_ptr->job_id,node_ptr->leaf_switch);
+                                job_ptr->job_id,node_ptr->leaf_switch);*/
 		}
 #endif
 
