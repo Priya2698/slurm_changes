@@ -1,6 +1,0 @@
-make[4]: *** Deleting file 'slurmstepd'
-make[1]: *** [all-recursive] Terminated
-make[2]: *** [all-recursive] Terminated
-make[4]: *** [slurmstepd] Terminated
-make: *** [all] Terminated
-make[3]: *** [all-recursive] Terminated
