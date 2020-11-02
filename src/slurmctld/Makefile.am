@@ -18,6 +18,8 @@ slurmctld_SOURCES =     \
 	burst_buffer.c	\
 	burst_buffer.h	\
 	controller.c 	\
+	calc_hops.c     \
+	calc_hops.h     \
 	fed_mgr.c 	\
 	fed_mgr.h 	\
 	front_end.c	\
